@@ -1,0 +1,38 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2><%= @assignment.name %></h2>
+
+<table class="tuple">
+    <tr>
+        <td>Submitted by:</td>
+        <td><%= @submission.users.map{|u| u.username}.join(", ") %></td>
+    </tr>
+    <tr>
+        <td>Submitted on:</td>
+        <td><%= @submission.timestamp.strftime("%c") %></td>
+    </tr>
+    <tr>
+        <td>Total Score:</td>
+        <td><%= @submission.score %> / <%= @submission.assignment.max_score %>
+        </td>
+    </tr>
+</table>
+
+<h2>Code</h2>
+<pre><%= h(@submission.submitted_file.data) %></pre>

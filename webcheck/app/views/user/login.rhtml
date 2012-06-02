@@ -1,0 +1,40 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<center>
+<h1 id="titlepage">Scheme Grading Program</h1>
+<h4>Please login with your Kerberos username and password</h4>
+<br />
+<% form_tag({:action => 'login_submit'}) do %>
+    <table class="tuple">
+        <tr>
+            <td><%= label :user, :username, "Username:" %></td>
+            <td><%= text_field :user, :username, :tabindex => 1 %></td>
+        </tr>
+        <tr>
+            <td><%= label :user, :password, "Password:" %></td>
+            <td><%= password_field :user, :password, :tabindex => 2 %></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><%= submit_tag 'Login' %></td>
+        </tr>
+    </table>
+<% end %>
+<%= set_focus "user_username" %>
+</center>

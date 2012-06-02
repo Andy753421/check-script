@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# submission_id		:integer
+# user_id			:integer
+
+one:
+  submission_id: 1
+  user_id: 1
+two:
+  submission_id: 1
+  user_id: 2
+three:
+  submission_id: 2
+  user_id: 3

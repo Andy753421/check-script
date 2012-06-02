@@ -1,0 +1,101 @@
+*******************************************************************************
+Details for updating the PLC Grading System on the CS Department's server
+*******************************************************************************
+This file contains information for how to update the version of the PLC 
+Grading System that is running on the server. This process should only be done 
+once the current working copy of the program in the development (trunk) folder 
+of the repository has been fully tested and is working normally. Ideally this 
+should not be done during a term when the PLC Grading System is being used in 
+the classroom in order to ensure that the system remains stable during that 
+time. Small fixes can be made directly to the code on the server, but this 
+is not advisable since no files should ever be committed from the server back 
+into the repository. 
+
+-------------------------------------------------------------------------------
+Tagging the current version of the repository
+-------------------------------------------------------------------------------
+Once the current development version of the program has been tested and is 
+considered stable, you need to tag that version so that it gets preserved in 
+the repository. To do this, first make sure that both the trunk and tags 
+folders are fully up-to-date on your local machine by running the following 
+commands from the repository's root directory:
+$ svn update trunk/
+$ svn update tags/
+$ svn update
+
+Next you need to copy the current version from trunk into the tags directory. 
+Identify the latest tagged version and set the new number, hereafter denoted 
+X.X, accordingly. Run the following:
+$ svn copy trunk/ tags/X.X
+Now commit the new tagged version to add the tag to the repository:
+$ svn commit tags/X.X
+
+Note: I've had a few issues where SVN complains about committing the new 
+tagged folder, but I've been able to fix this by just deleting the tagged 
+folder and then re-tagging it and committing it again. 
+
+-------------------------------------------------------------------------------
+Updating the server's files
+-------------------------------------------------------------------------------
+Next you need to update the files on the server. To do this, first log onto 
+plc.cs.rose-hulman.edu as root and navigate to /var/www. From there, run the 
+following command to stop the webserver:
+$ /etc/init.d/rails stop
+
+Now you need to move the previous version of the files before you can download 
+the new ones. Do the following:
+$ mv rails/ Versions/rails.vY.Y/                // Y.Y is old version number
+$ mv check-script/ Versions/check-script.vY.Y/  // Y.Y is old version number
+
+Next you need to check out the latest tagged version of the program from the 
+repository. To do that, run the following:
+$ svn co http://svn.cs.rose-hulman.edu/repos/check-script/tags/X.X 
+         check-script
+
+Now that the files are checked out, you need to move them around a bit on the 
+server and copy some config files from the previous rails version to the new 
+one. Do the following:
+$ mv check-script/webcheck ./rails
+$ cp Versions/rails.vY.Y/config/database.yml rails/config
+$ cp Versions/rails.vY.Y/certs/server.pem rails/certs
+
+Next you need to add in a symbolic link to the new check-script information 
+because of the way the server was originally set up. (Note: Things can 
+probably be modified so this step isn't necessary, but for now it is.)
+$ cd rails/vendor
+$ rm libcheck
+$ ln -s ../../check-script/libcheck
+
+Now you need to double-check that all the files on the server are configured 
+correctly because the repository files may be configured for local machine 
+development instead of for the server. You need to make sure of the following: 
+- That rails/app/models/user.rb is configured to authenticate with LDAP. This 
+  means making sure that the lines of code for LDAP authentication are NOT 
+  commented out.
+- That check-script/libcheck/libcheck.rb is configured to run with dpriv 
+  as soon as dpriv is working; for now, it should be left commented out. 
+- That check-script/libcheck/lang/chez_scheme/init.rb is configured to use 
+  'scheme' and not 'petite'.
+- That the password for the 'admin' and 'student' users are changed in 
+  rails/app/models/user.rb. Make sure that Dr. Anderson and the TAs know these 
+  passwords. 
+- That the config secret should be updated. This is found in the file 
+  rails/config/environment.rb. Look for config.action_controller.session, and 
+  randomize the secret in some way. (I'm not sure if this is entirely 
+  necessary, but I've been doing it just in case. To randomize it, just add 
+  in a few random numbers and characters (only a, b, c, d, e, and f are 
+  allowed) in random spaces.)
+
+Once you're done with these changes, restart the web server by running: 
+$ /etc/init.d/rails restart
+
+The system should now be back up and running at this point, so open a web 
+browser and go to plc.cs.rose-hulman.edu and log in to make sure that 
+everything is working properly.
+
+-------------------------------------------------------------------------------
+MySQL Dumping
+-------------------------------------------------------------------------------
+To dump the contents of a MySQL database for backup purposes, run the 
+following command:
+$ mysqldump -r <dest-file> <db-name>

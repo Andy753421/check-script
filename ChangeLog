@@ -1,0 +1,14 @@
+version 1.2.0 (2008/04/24):
+	Release:
+	* Changed to public repository
+	* Licenced under AGPLv3
+	* Reorganized some files (libcheck, dpriv)
+	* Updated documentation
+	* Deleted documentation
+
+	Technical changes:
+	* Support for better error messages
+	* Change to restart scheme after each failed test
+	* Added ruby PIO class for interacting with subprocesses
+	* Fix issue with tabs under student section (security fix)
+	* Changed to use non-string command lines (security fix)

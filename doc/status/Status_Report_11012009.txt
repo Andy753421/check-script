@@ -1,0 +1,31 @@
+Status Report for Logan Price
+Sunday November 1, 2009
+
+Goals for this Week
+--------------------
+ * Get Trac setup (if Mike happens to get the project setup for us)
+ * Finish the task I'm working on.
+ * Continue working on items in the TODO list.
+
+Accomplishments for this Week
+-----------------------------
+ * When trying to think of a way to implement "remembering tabs", I found that 
+   I still wasn't understanding a lot of what was going on.  So I spent several
+   hours looking over Ruby on Rails tutorials to try and make things clearer.
+   This turned out to be a big help and I have a bunch of Rails resources
+   bookmarked so as to pass the information on to others.
+ * As I was looking through the database, I noticed that there is a column in
+   the "users" table called: "last_assignment_viewed".  It appears that this is
+   left over from the last person to work on "remembering tabs".  It also looks
+   as though it is never written to (all the values were NULL).  That being the
+   case, I decided to go ahead and use this column for "remembering tabs".
+   I've got this working for the "Student" tab (for ALL users) and am in the 
+   process of finishing this for the "Assignments", "Submissions", and 
+   "All Submissions" tabs (for Admin users).
+
+Goals for next Week
+-------------------
+ * Finish implementing and testing "remembering tabs".
+ * Continue working on items in the TODO list.
+ * Get Trac setup (I'll have to talk to Mike again...I would normally have given
+   up by now if I didn't believe that Trac will be a HUGE asset).

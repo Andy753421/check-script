@@ -1,0 +1,78 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Import Previous Assignments</h2>
+<h3>New Grading System Format</h3>
+<% form_tag({:action => 'assignment_import_new'}, {:multipart => true}) do %>
+    <%= file_field :assignment, :file, :size => 60 %>
+    <%= submit_tag 'Upload' %>
+<% end %>
+
+<h3>Old Grading System Format</h3>
+<% form_tag({:action => 'assignment_import_old'}, {:multipart => true}) do %>
+    <%= file_field :assignment, :file, :size => 60 %>
+    <%= submit_tag 'Upload' %>
+<% end %>
+
+<h2>Assignments</h2>
+<table>
+    <tr>
+        <th>Assignment</th>
+        <th>Visible</th>
+        <th>Show Full Report</th>
+    </tr>
+    <% @assignments.each do |as| %>
+        <tr>
+            <% form_tag({:action => 'assignment_mod', :as_id => as.id}, 
+                        :style => "display:inline;") do %>
+                <td>
+                    <%= text_field :assignment, :name, :value => as.name %>
+                </td>
+                <td>
+                    <%= check_box :assignment, :visible, 
+                                  :checked => as.visible %>
+                </td>
+                <td>
+                    <%= check_box :assignment, :full_report_available, 
+                                  :checked => as.full_report_available %>
+                </td>
+                <td>
+                    <%= submit_tag 'Update' %>
+                </td>
+            <% end %>
+            <td>
+                <% form_tag({:action => 'assignment_cp', :as_id => as.id}, 
+                            :style => "display:inline;") do %>
+                    <%= submit_tag 'Copy' %>
+                <% end %>
+            </td>
+            <td>
+                <% form_tag({:action => 'assignment_dump', :as_id => as.id}, 
+                            :style => "display:inline;") do %>
+                    <%= submit_tag 'Export' %>
+                <% end %>
+            </td>
+            <td>
+                <% form_tag({:action => 'assignment_del', :as_id => as.id}, 
+                            :style => "display:inline;") do %>
+                    <%= submit_tag 'X' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>

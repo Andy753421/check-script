@@ -1,0 +1,15 @@
+:defaults: 
+          :comparator: "(lambda (expected actual)
+                          (if (equal? expected 'other)
+                            (not (equal? actual expected))
+                            (equal? actual expected)))"
+          :maxtime: 2
+:testcases: 
+        - :expected:  "parse-expression"
+          :test_code: "(call/cc (lambda (k)
+                         (error-handler (lambda err (k (car err))))
+                         (k (throw-error))))"
+        - :expected:  "other"
+          :test_code: "(call/cc (lambda (k)
+                         (error-handler (lambda err (k (car err))))
+                         (k (no-error))))"

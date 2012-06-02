@@ -1,0 +1,66 @@
+Status Report for Logan Price
+Friday September 11, 2009
+
+Goals for this Week
+--------------------
+ * Get reacquainted with the grading system.
+ * Research Trac.
+ * Start working on tasks in the TODO list
+
+Accomplishments for this Week
+-----------------------------
+ * Began re-learning how the script works.  I feel much better this time around
+   as far as understanding how everything works.  I attribute this to a better
+   understanding of Ruby in general.
+ * Trac, I'm actually really excited about Trac's potential.  I think we could
+   benefit immensely if we start using it to keep track of documentation, bugs,
+   new features, and things of that nature.
+
+   The Trac homepage can be found here: http://trac.edgewall.org/
+   
+   Trac is designed to be used during software development as in issue tracking
+   system.  Through the use of wikis, it also serves as a common knowledge base
+   for all those working on the project.
+
+   Trac also integrates with SVN to provide a way to easily browse files in the
+   repository, even browse through previous revisions of the repository.  It 
+   also provides a way to view diffs (differences) of files at different
+   revisions.
+
+   There is also a way to keep track of builds and the overall project status
+   through the use of the Roadmap feature.  (I'm not exactly sure how this
+   works and how applicable it would be to us)
+
+   These are only a few of the highlights of using Trac.  As for our project, I
+   think that the most beneficial features would be the Ticketing system which
+   will allow us to enter feature requests and bug reports and then assign 
+   these to different individuals for completion.  It is also possible to set
+   up email notifications on tickets so as progress is made the administrator 
+   could constantly be in the loop (for example).  The Repository Browser is 
+   also an attractive feature of Trac.  While it is possible to browse a 
+   repository in a web browser by navigating to the appropriate url, I am
+   unaware of a way to view previous revisions of a repository this manner (a
+   task that can be easily accomplished in Trac).  Finally, being able to
+   access all documentation from a common place (through the use of wikis) 
+   would be a huge benefit.  Having a convenient place in which to contribute
+   (I feel) would also help encourage those involved on the project to share
+   any knowlegde they may have aquired (maybe we could even get Jason to 
+   contribute!).
+
+   I talked to Darryl about what it would take to get this off the ground.  
+   The only problem is that Trac must be installed on the same machine that the
+   repository is stored on.  Darryl said that since the check-script repository
+   is located on Roses SVN server we may have to create a virtual machine and 
+   move the repository to get Trac installed.  I'm not sure of all the 
+   implications of moving the repository but I imagine we can discuss that when
+   I get back from Sweden.
+
+ * Most of the work I have done this week has revolved around researching Trac,
+   so I haven't yet started any development, though I have started to look over
+   the code for the first item on the TODO list.
+
+Goals for next Week
+-------------------
+ * I'll be in Sweden next week and I don't expect to have time to work on this.
+   When I get back I hope to be able to move forward with setting up Trac but
+   we'll have to discuss that.

@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# name				:string
+# maxtime			:integer
+# available			:datetime
+# due				:datetime
+# comparator_id		:integer
+# module			:string
+# visible			:boolean
+
+one:
+  id: 1
+  name: assignment 1
+  maxtime: 5
+  comparator_id: 0
+  available: 2008-01-01
+  due: 2008-01-31
+  visible: true
+two:
+  id: 2
+  name: assignment 2
+  maxtime: 10
+  comparator_id: 0
+  available: 2008-02-01
+  due: 2008-02-28
+  visible: true

@@ -1,0 +1,152 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<% if (@assignment != nil) %>
+    <h2>New submission</h2>
+    <% if ((@user.student?) and (@assignment.late_day_end) and
+            ((Time.now <=> @assignment.late_day_end) >= 0)) %>
+        Submission deadline and late day deadline have passed
+    <% else %>
+        <% form_tag({:action => 'assignment_submit'}, 
+                    {:multipart => true}) do %>
+            <%= hidden_field :submission, 
+                             :assignment_id, :value => @assignment.id %><br />
+            <table class="tuple">
+                <tr>
+                    <td><%= label :submission, :submitted_file, "Code: " %></td>
+                    <td><%= file_field :submission, :submitted_file, 
+                                       :size => 60 %></td>
+                </tr>
+                <tr>
+                    <td><%= label :submission, :users, "Teammates: " %></td>
+                    <td><%= text_field :submission, :users, 
+                                       :style => "width:100%;" %></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><%= submit_tag 'Upload' %></td>
+                </tr>
+            </table>
+        <% end %>
+    <% end %>
+
+    <h2>Previous submissions</h2>
+    <%# This was submission_report_short(@submissions) %>
+    <% if @submissions == nil || @submissions.empty? %>
+        No submissions
+    <% else %>
+        <% @max_score = @submissions[0].assignment.max_score %>
+        <table>
+            <tr>
+                <th>Usernames</th>
+                <th>Score</th>
+                <th>Time submitted</th>
+                <th>Reports</th>
+                <th>Files</th>
+                <th>Grade</th>
+            </tr>
+            <% @submissions.each do |sub| %> 
+                <tr>
+                    <td><%= sub.users.map{|u| u.username}.join(", ") %></td>
+                    <td><%= sub.score %> / <%= @max_score %></td>
+                    <% if (true and @assignment.due and 
+                            @assignment.late_day_end) %>
+                        <% if ((sub.timestamp <=> 
+                                (@assignment.due - 86400)) <= -1) %>
+                            <td class="assnEarly">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% elsif ((sub.timestamp <=> @assignment.due) <= -1) %>
+                            <td class="assnOnTime">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% elsif ((sub.timestamp <=> 
+                                @assignment.late_day_end) <= -1) %>
+                            <td class="assnLate">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% else %>
+                            <td class="assnElse">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% end %>
+                    <% else %>
+                        <!-- For whatever reason, the due date and/or the late 
+                             day end date are not defined, so don't color -->
+                        <td><%= sub.timestamp.strftime("%c") %></td>
+                    <% end %>
+                    <td><%= link_to "Report", 
+                            :controller => 'student',
+                            :action => 'report',
+                            :as_id => sub.assignment_id,
+                            :sub_id => sub.id %></td>
+                    <td><%= link_to "Code", 
+                            :controller => 'student',
+                            :action => 'code',
+                            :as_id => sub.assignment_id,
+                            :sub_id => sub.id %></td>
+                    <td><%= link_to "Regrade", 
+                            :controller => 'student',
+                            :action => 'assignment_regrade',
+                            :as_id => sub.assignment_id,
+                            :sub_id  => sub.id %></td>
+                </tr>
+            <% end %>
+        </table>
+    <% end %>
+
+    <h2>Assignment Details</h2>
+    <%# This was assignment_details(@assignment) %>
+    <% if @assignment != nil %>
+        <table class="tuple">
+            <tr>
+                <td>Available:</td>
+                <td><%= @assignment.available.strftime("%c") unless
+                        @assignment.available.nil? %></td>
+            </tr>
+            <tr>
+                <td>Due:</td>
+                <td><%= @assignment.due.strftime("%c") unless 
+                        @assignment.due.nil? %></td>
+            </tr>
+            <tr>
+                <td>Late Day Deadline:</td>
+                <td><%= @assignment.late_day_end.strftime("%c") unless
+                        @assignment.late_day_end.nil? %></td>
+            </tr>
+            <tr>
+                <td>Problems:</td>
+                <td>
+                    <% probs = @assignment.problems.sort{|x, y|
+                        if (x.number == nil)
+                            (-1)
+                        elsif (y.number == nil)
+                            (1)
+                        else
+                            (x.number <=> y.number)
+                        end} %>
+                    <% probs.each do |prob| %>
+                        <%= prob.number %> - <%= prob.description %><br>
+                    <% end %>
+                </td>
+            </tr>
+        </table>
+    <% end %>
+<% else %>
+    No assignments are currently available
+<% end %>

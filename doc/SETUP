@@ -1,0 +1,221 @@
+*******************************************************************************
+Detailed Installation Guide for the PLC Grading System
+*******************************************************************************
+This was written for Fedora, but should be similar for most Linux 
+distributions. Lines that start with a $ character are actual commands that 
+should be typed at the command prompt in a terminal. Depending on your Linux 
+distribution, there may be some slight variations. 
+
+-------------------------------------------------------------------------------
+Checking out the repository
+-------------------------------------------------------------------------------
+The first step to getting started with the PLC Grading System is to check out 
+the repository. This repository is stored on the CS Department's SVN server, 
+so you'll need SVN installed and an SVN account in order to access it. This 
+should be checked out to a convenient location on your local machine (in this 
+example, that location is ~/Documents/Programming/PLC-Grader). 
+$ svn co http://svn.cs.rose-hulman.edu/repos/check-script/trunk/ 
+         ~/Documents/Programming/PLC-Grader
+
+-------------------------------------------------------------------------------
+Installing the required software
+-------------------------------------------------------------------------------
+Some software is needed to run the grading program. This includes the Ruby on 
+Rails framework, MySQL for database support, LDAP for authentication purposes, 
+and Petite Chez Scheme for the grading component. (Note: This list is not 
+necessarily all-inclusive; some additional software may be needed. However, 
+this list contains the major components for the system.)
+
+Ruby on Rails
+*************
+$ yum install ruby
+$ yum install ruby-gem
+$ yum install ruby-devel
+$ yum install ruby-mysql
+$ yum install ruby-ldap // may not be necessary
+$ yum install irb // not necessary - irb is an interactive Ruby interpreter
+$ gem install -v=2.2.2 rails
+
+MySQL
+*****
+$ yum install mysql
+$ yum install mysql-gui-tools
+$ yum install mysql-administrator
+
+Chez Scheme
+***********
+$ yum install petitechezscheme
+Alternatively, you can install Petite Chez Scheme from the website: 
+    http://www.scheme.com/download/index.html
+
+For Ubuntu, you need to download the RPM from the above site and install it 
+using alien, a program that allows Ubuntu to install RPMs.
+$ sudo apt-get install alien
+$ alien -i <Petite File>.rpm
+
+-------------------------------------------------------------------------------
+Configuring the database
+-------------------------------------------------------------------------------
+After all the required software has been installed, the next step is to set up 
+the database. There are two ways to do this: one is through the command-line, 
+the other is through the GUI. The GUI is probably easier to use, but harder to 
+document, so both methods are provided here. 
+
+Database Setup with Command-Line
+********************************
+First you need to start the MySQL command prompt. In Fedora, you need to be 
+root to do this, so you can start this by using the following command:
+$ mysql --user=root --password=<root-pass>
+
+Once you have started the MySQL command prompt (hereafter denoted by the > 
+character), you should set up a user and some databases. Run the following 
+commands, using an appropriate password:
+> create user 'plc_check'@'localhost' identified by '<password>';
+> create database plc_check_dev;
+> create database plc_check_test;
+> create database plc_check_prod;
+Note: On the production server, it is advisable to set up new databases for 
+each year, so that they don't become too over-populated with student 
+assignments. In this case, the naming convention should be 
+'plc_check_[dev|test|prod]_year'. Before doing this, however, make sure all 
+assignments in the current production database are exported using the export 
+feature from the grading program's web interface. Then these assignments can 
+be reimported into the new database. (You can also move these between the 
+databases manually, but this is not advised.)
+
+Next you need to assign privileges on these databases to the new user:
+> grant all privileges on plc_check_dev.* to 
+          plc_check@'localhost' identified by 'password';
+
+Now exit the MySQL command prompt:
+> quit;
+
+Now in a terminal navigate to the directory where you checked out the 
+repository. Then run the following to create the appropriate tables within 
+the databases:
+$ cd trunk/webcheck 
+$ rake db:migrate
+$ rake db:migrate RAILS_ENV=production
+Note: If this process fails for some reason, try to diagnose the problem by 
+looking at the error message and doing some Google searches to figure out the 
+cause. Then fix it, delete the database and recreate it using the process 
+above, then rerun the migrate command. If you leave the previous database, you 
+are likely to encounter problems when re-running rake due to the incomplete 
+migration from the first time. 
+
+Once the database has been set up, you need to create some default users in 
+order to be able to log into the grading program. Start up the MySQL command 
+prompt using the user that you created earlier:
+$ mysql --user=plc_check --password=<password>;
+> use plc_check_dev;    // Use plc_check_prod on server
+> insert into users (username, role) values ('admin', 'Professor');
+> insert into users (username, role) values ('student', 'Student');
+> quit;
+
+Database Setup with GUI
+***********************
+As an alternative to using the command-line, you can use the MySQL GUI tools 
+to set up the database. The basic ideas are the same: create a user, create 
+databases, and set up the databases. 
+In the MySQL Query Browser, run the following queries:
+    create database plc_check_dev;
+    create database plc_check_test;
+    create database plc_check_prod;
+In the MySQL Administrator, do the following:
+    Create a user 'plc_check' with appropriate password
+    Change host for plc_check to localhost
+    Assign all privileges for plc_check_* databases to plc_check user
+
+Then in a terminal, navigate to the checked out repository and run the 
+following:
+$ cd trunk/webcheck
+$ rake db:migrate
+$ rake db:migrate RAILS_ENV=production
+Follow the same debugging tips listed above if there are any problems. 
+
+In MySQL Query Browser, log in as plc_grader and run the following queries:
+    use plc_dev;
+    insert into users (username, role) values ('admin', 'Professor');
+    insert into users (username, role) values ('student', 'Student');
+
+Finishing database setup
+************************
+Regardless of which method you used to create the database, you now need to 
+edit some Rails configuration files to contain the database information. 
+Navigate to the checked out repository folder and then edit the file 
+trunk/webcheck/config/database.yml so that it contains the appropriate 
+information for the databases and database user that you created, then save 
+the file. That should conclude the database setup. 
+
+-------------------------------------------------------------------------------
+Finalizing the PLC Grading System setup
+-------------------------------------------------------------------------------
+If you are setting up the system for development purposes on a local machine, 
+you need to edit some files to finalize the setup process. The changes that 
+are described below are only intended for use with the grading program on a 
+local machine, so these changes should be reverted before the files are 
+committed back to the repository. 
+
+Disabling LDAP authentication
+*****************************
+Due to configuration issues, getting LDAP working on your local machine can 
+be difficult, so it's easier just to disable it for development purposes. To 
+do this, edit user.rb file located in trunk/webcheck/app/models/, and comment 
+out the lines for LDAP authentication. There should be a comment in the file 
+indicating which lines these are. Make sure to uncomment these lines before 
+committing this file back to the repository.
+
+Disabling dpriv
+***************
+dpriv is used to improve security for the grading program, but it needs 
+SELinux installed to work properly. Also, the configuration is currently not 
+well-documented, so it is easier to disable it for development purposes. To do 
+this, do the following: 
+In trunk/libcheck/libcheck.rb, replace the line
+    process = PIO.new(*(['dpriv']+cmd[:cmd]), &cmd[:init])
+with the line
+    process = PIO.new(*(cmd[:cmd]), &cmd[:init])
+Again, make sure to revert this change before committing this file back to the 
+repository.
+
+Using Petite Chez Scheme instead of Chez Scheme
+***********************************************
+Since Chez Scheme needs a license to use, Petite Chez Scheme should be used 
+for development purposes on a local machine. To set up the grading program 
+so that it uses Petite Chez Scheme on your local machine, you need to edit 
+the file trunk/libcheck/lang/chez_scheme/init.rb and change the command lines 
+near the bottom to use 'petite' instead of 'scheme'. The appropriate lines 
+should already be included in the file, so you just need to uncomment one and 
+comment out the other as necessary. 
+
+-------------------------------------------------------------------------------
+Starting the PLC Grading System
+-------------------------------------------------------------------------------
+To start up the PLC Grading System, you need to first make sure that MySQL is 
+running. This can be accomplished by running the following command on Fedora: 
+$ /etc/init.d/mysqld start
+If you are using Ubuntu, the following command should work:
+$ sudo /etc/init.d/mysql start
+
+Then navigate to the checked out repository folder in a terminal and run 
+the following:
+$ cd trunk/webcheck
+$ ./script/server
+
+The Rails application should now be up and running on your local machine. To 
+access it, open a web browser and navigate to http://localhost:3000/. The 
+first time you use the program, you'll need to log in with the admin account 
+you created earlier. The password for this account can be found in the file 
+trunk/webcheck/app/models/user.rb. Note: This password is kept in the 
+repository file, but it should be changed on the server's version. Make sure 
+that the file on the server does not get committed to the repository. 
+
+After logging in, you can create new users and set up other accounts that can 
+be used to access the system. For development purposes, these accounts can be 
+whatever you want, since they have no authentication mechanism. However, for 
+production, these new accounts need to be valid Kerberos accounts since they 
+will be checked against LDAP before being allowed to log in. 
+
+-------------------------------------------------------------------------------
+END
+-------------------------------------------------------------------------------

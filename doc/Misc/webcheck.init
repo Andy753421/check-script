@@ -1,0 +1,40 @@
+#!/bin/s
+# Init script to control Ruby on Rails
+
+start() 
+{
+        echo -n $"Starting rails: "
+        (cd /var/www/rails/ && ./script/server lighttpd &)
+        RETVAL=$?
+        (/var/www/rails/certs/redirect.rb   &)
+        return $RETVAL
+}
+
+stop() 
+{
+        echo -n $"Stopping rails: "
+        pkill redirect.rb
+        pkill nc
+        pkill lighttpd
+        RETVAL=$?
+        return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  force-reload|restart|reload)
+        stop
+        start
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 3
+esac
+
+exit $RETVAL

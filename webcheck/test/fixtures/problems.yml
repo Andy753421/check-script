@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# assignment_id		:integer
+# number			:integer
+# maxtime			:integer
+# description		:text
+# comparator_id		:integer
+
+one:
+  id: 1
+  assignment_id: 1
+  number: 1
+  description: Find the Minimum
+two:
+  id: 2
+  assignment_id: 1
+  number: 2
+  description: Find the Maximum

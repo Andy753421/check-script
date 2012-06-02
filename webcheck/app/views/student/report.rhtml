@@ -1,0 +1,100 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2><%= @assignment.name %></h2>
+
+<table class="tuple">
+    <tr>
+        <td>Submitted by:</td>
+        <td><%= @submission.users.map{|u| u.username}.join(", ") %></td>
+    </tr>
+    <tr>
+        <td>Submitted on:</td>
+        <td><%= @submission.timestamp.strftime("%c") %></td>
+    </tr>
+    <tr>
+        <td>Total Score:</td>
+        <td><%= @submission.score %> / <%= @submission.assignment.max_score %>
+        </td>
+    </tr>
+</table>
+
+<h2>Details</h2>
+<table class="tuple" style="margin-bottom:1em;"> 
+<!-- border="1px solid black"-->
+    <% probs = @assignment.problems.sort{|x, y| 
+        if (x.number == nil)
+            (-1)
+        elsif (y.number == nil)
+            (1)
+        else
+            (x.number <=> y.number)
+        end } %>
+    <% if !@assignment.full_report_available && session[:user].student? %>
+        <!-- Limited Report -->
+        <tr>
+            <th>Problem</th>
+            <th>Score</th>
+        </tr>
+        <% probs.each do |prob| %>
+            <tr>
+                <td><%= prob.number %> - <%= prob.description %></td>
+                <td><%= prob.score(@submission) %> / <%= prob.max_score %></td>
+            </tr>
+        <% end %>
+    <% else %>
+        <!-- Full Report -->
+        <tr>
+            <th>Problem</th>
+            <th>Problem Score</th>
+            <th>Testcase Score</th>
+            <th>Test Case</th>
+            <th>Correct Answer</th>
+            <th>Your Answer</th>
+            <th>Errors</th>
+        </tr>
+        <% probs.each do |prob| %>
+            <tr class="r1">
+                <td><%= prob.number %> - <%= prob.description %></td>
+                <td><%= prob.score(@submission) %> / <%= prob.max_score %></td>
+                <td></td><td></td><td></td><td></td><td></td>
+            </tr>
+            <% @temp = true %>
+            <% prob.testcases.each do |tc| %>
+                <tr>
+                    <td></td><td></td>
+                    <% if @temp %>
+                        <td class="d2">
+                            <%= tc.score(@submission) %> / <%= tc.points %></td>
+                        <td class="code1"><%= h(tc.test_code) %></td>
+                        <td class="code2"><%= h(tc.correct_answer) %></td>
+                        <td class="code1"><%= h(tc.studentOutput(@submission)) %></td>
+                        <td class="code2"><%= h(tc.studentErrors(@submission)) %></td>
+                    <% else %>
+                        <td class="d1"><%= tc.score(@submission) %> / <%= tc.points %></td>
+                        <td class="code2"><%= h(tc.test_code) %></td>
+                        <td class="code1"><%= h(tc.correct_answer) %></td>
+                        <td class="code2"><%= h(tc.studentOutput(@submission)) %></td>
+                        <td class="code1"><%= h(tc.studentErrors(@submission)) %></td>
+                    <% end %>
+                    <% @temp = !@temp %>
+                </tr> 
+            <% end %>
+        <% end %>   
+    <% end %>
+</table>

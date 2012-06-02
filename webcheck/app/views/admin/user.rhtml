@@ -1,0 +1,77 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Users (<%= @active_students %> active students)</h2>
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Active</th>
+    </tr>
+    <% @users.each do |user| %>
+        <tr>
+            <% form_tag({:action => 'user_mod', :user_id => user.id}, 
+                        :style => "display:inline;") do %>
+                <td>
+                    <%= text_field :user, :username, 
+                                   :value => user.username, 
+                                   :size => 8 %>
+                </td>
+                <td>
+                    <%= role_select :user, :role, @roles, user.role %>
+                </td>
+                <td>
+                    <%= check_box :user, :active, :checked => user.active %>
+                </td>
+                <td>
+                    <%= submit_tag 'Update' %>
+                </td>
+            <% end %>
+            <td>
+                <% form_tag({:action => 'user_del', :user_id => user.id}, 
+                            :style => "display:inline;") do %>
+                    <%= submit_tag 'X' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+    <tr>
+        <% form_tag :action => 'user_add' do %>
+            <td>
+                <%= text_field :user, :username, :size => 8 %>
+            </td>
+            <td>
+                <%= role_select :user, :role, @roles %>
+            </td>
+            <td>
+                <%= check_box :user, :active, :checked => true %>
+            </td>
+            <td>
+                <%= submit_tag 'Create New' %>
+            </td>
+        <% end %>
+    </tr>
+</table>
+
+
+<h2>Batch Addition of Users</h2>
+<% form_tag({:action => 'user_add_list'}) do %>
+    <%= text_area :user_list, :usernames, :cols => 40, :rows => 10 %>
+    <%= submit_tag %>
+<% end %>
+

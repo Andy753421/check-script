@@ -1,0 +1,286 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<% if @assignment == nil %>
+    <% return "Assignment does not exist" %>
+<% end %>
+
+<h2>Assignment Details</h2>
+<% form_tag :action => 'edit_assignment_mod', 
+            :as_id => @assignment.id do %>
+    <table class="tuple">
+        <tr>
+            <td><%= label :assignment, :name, 'Name:' %></td>
+            <td><%= text_field :assignment, :name, 
+                    :value => @assignment.name %></td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :maxtime, 'Maxtime (ms):' %></td>
+            <td><%= text_field :assignment, :maxtime, 
+                               :value => @assignment.maxtime,
+                               :size => 5 %></td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :output_width, 'Output Width:' %></td>
+            <td><%= text_field :assignment, :output_width, 
+                               :value => @assignment.output_width,
+                               :size => 5 %></td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :error_width, 'Error Width:' %></td>
+            <td><%= text_field :assignment, :error_width, 
+                               :value => @assignment.error_width,
+                               :size => 5 %></td>
+        </tr>
+        <tr>
+            <td>Testcase Entry Box:</td>
+            <td>
+                <%= label :assignment, :testcase_width, 'Width' %>
+                <%= text_field :assignment, :testcase_width, 
+                               :value => @assignment.testcase_width, 
+                               :size => 5 %>
+                <%= label :assignment, :testcase_height, 'Height' %>
+                <%= text_field :assignment, :testcase_height, 
+                               :value => @assignment.testcase_height,  
+                               :size => 5 %>
+            </td>
+        </tr>
+        <tr>
+            <td>Answer Entry Box:</td>
+            <td>
+                <%= label :assignment, :answer_width, 'Width' %>
+                <%= text_field :assignment, :answer_width, 
+                               :value => @assignment.answer_width, 
+                               :size => 5 %>
+                <%= label :assignment, :answer_height, 'Height' %>
+                <%= text_field :assignment, :answer_height, 
+                               :value => @assignment.answer_height, 
+                               :size => 5 %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :available, 'Available:' %></td>
+            <td>
+                <%= datetime_select :assignment, :available, 
+                    :default => @assignment.available %>
+                <% if @assignment.available != nil %>
+                    <%= Date::ABBR_DAYNAMES[@assignment.available.wday] %>
+                <% else %>
+                    <%= Date::ABBR_DAYNAMES[Time.now.wday] %>
+                <% end %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :due, 'Due:' %></td>
+            <td>
+                <%= datetime_select :assignment, :due, 
+                    :default => @assignment.due %>
+                <% if @assignment.due != nil %>
+                    <%= Date::ABBR_DAYNAMES[@assignment.due.wday] %>
+                <% else %>
+                    <%= Date::ABBR_DAYNAMES[Time.now.wday] %>
+                <% end %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :late_day_end, 'Late Day Deadline:' %>
+            </td>
+            <td>
+                <%= datetime_select :assignment, :late_day_end, 
+                    :default => @assignment.late_day_end %>
+                <% if @assignment.late_day_end != nil %>
+                    <%= Date::ABBR_DAYNAMES[@assignment.late_day_end.wday] %>
+                <% else %>
+                    <%= Date::ABBR_DAYNAMES[Time.now.wday] %>
+                <% end %>
+            </td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :comparator_id, 'Comparator:' %></td>
+            <td><%= comparator_select :assignment, :comparator_id, 
+                    @assignment.comparator %></td>
+        </tr>
+        <tr>
+            <td><%= label :assignment, :module, 'Modules:' %></td>
+            <td><%= text_field :assignment, :module %></td>
+        </tr>
+
+        <tr>
+            <td>Points:</td>
+            <td><%= @assignment.max_score %></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><%= submit_tag 'Save' %></td>
+        </tr>
+    </table>
+<% end %>
+
+
+<h2>Problems</h2>
+<%# Add problem %>
+<% form_tag :action => 'edit_problem_add', 
+            :as_id => @assignment.id do %>
+    <%= hidden_field :problem, :assignment_id, 
+                     :value => @assignment.id %>
+    <%= hidden_field :problem, :number, 
+                     :value => 0 %>
+    <%= submit_tag 'New Problem' %>
+<% end %>
+<table>
+    <%# Show problems %>
+    <% probs = @assignment.problems.sort{|x, y| 
+            if (x.number == nil) 
+                (-1)
+            elsif (y.number == nil)
+                (1)
+            else
+                (x.number <=> y.number)
+            end} %>
+    <% probs.each do |prob| %>
+        <%# spacer %>
+        <tr><td colspan="7">&nbsp;</td></tr>
+
+        <%# Problem details %>
+        <tr style="border-top:solid 1px black;
+                   border-left:solid 1px black;
+                   border-right:solid 1px black;
+                   white-space:nowrap;">
+            <td>
+                <%= link_to_function(
+                    "<span style=\"font-family:monospace; font-size:x-large; 
+                    font-weight:bold;\" id=\"+_#{prob.id}\">+</span>",
+                    "plc_toggle('problem_#{prob.id}_testcases'); 
+                    toggle_text('+_#{prob.id}','+','-')",
+                    :style => "text-decoration: none") 
+                %>
+            </td>
+            <td><%= editor prob, :description, :size => 30 %></td>
+            <td>Maxtime (ms): <%= editor prob, :maxtime, :size => 5 %></td>
+            <td>Output Width: <%= editor prob, :output_width, :size => 5 %></td>
+            <td>Error Width: <%= editor prob, :error_width, :size => 5 %></td>
+            <td width="100%">
+                Comparator: <%= cmpr_editor prob, :comparator_id %>
+            </td>
+        </tr>
+        <tr style="border-left:solid 1px black; 
+                   border-right:solid 1px black;
+                   white-space:nowrap;">
+            <td><%= editor prob, :number, :size => 1 %></td>
+            <td>
+                <% form_tag({:action => 'edit_testcase_add', 
+                             :as_id => @assignment.id}, 
+                             :style => 'display:inline') do %>
+                    <%= hidden_field :testcase, :problem_id, 
+                        :value => prob.id  %>
+                    <%= submit_tag 'New Testcase' %>
+                <% end %>
+                <input type="button" onclick="document.location='<%=
+                    url_for(:action => 'edit_problem_del', 
+                            :prob_id => prob.id) %>'" value="Delete Problem" />
+                <!-- <td width="100%" align="right"> -->
+            </td>
+            <td>TC Width: <%= editor prob, :testcase_width, :size => 5 %></td>
+            <td>TC Height: <%= editor prob, :testcase_height, :size => 5 %></td>
+            <td>Ans Width: <%= editor prob, :answer_width, :size => 5 %></td>
+            <td>Ans Height: <%= editor prob, :answer_height, :size => 5 %></td>
+        </tr>
+        <tr style="border-left:solid 1px black; 
+                   border-right:solid 1px black;
+                   border-bottom:solid 1px black;
+                   white-space:nowrap;">
+            <td></td>
+            <td>
+                <% form_tag({:action => 'edit_problem_cp', 
+                             :as_id => @assignment.id}, 
+                             :style => 'display:inline;') do %>
+                    <%= hidden_field :problem, :id, :value => prob.id %>
+                    <%= assignment_select :assignment, :id %>
+                    <%= submit_tag 'Copy to' %>
+                <% end %>
+            </td>
+            <td>Points: <%= prob.max_score %></td>
+        </tr>
+
+        <%# Testcases %>
+        <tr id="problem_<%= prob.id %>_testcases" 
+            style="display:none;" class="testcase">
+            <td></td>
+            <td colspan="7" style="border:solid 0px black;
+                                   border-width:0px 1px 1px 1px;
+                                   width:100%;
+                                   padding:0;">
+                <table>
+                    <tr>
+                        <td>Test Code</td>
+                        <td>Correct Answer</td>
+                        <td>Points</td>
+                        <td>Maxtime (ms)</td>
+                        <td>Comparator</td>
+                        <td>Delete</td>
+                        <td>Copy to</td>
+                        <!-- <td style="text-align:right; width:100%">Copy to</td> -->
+                    </tr>
+                    <% prob.testcases.each do |tc| %>
+                        <% @tc = tc %><%# so that in_place_edit_field 
+                                          can access the right thing %>
+                        <tr>
+                            <td>
+                                <%= block_editor tc, :test_code, 
+                                                     "name" =>"test",
+                                                     "rows" =>tcHeight(prob), 
+                                                     "cols" =>tcWidth(prob)
+                                %>
+                            </td>
+                            <td>
+                                <%= block_editor tc, :correct_answer,
+                                                     "name" =>"answer",
+                                                     "rows" =>ansHeight(prob),
+                                                     "cols" =>ansWidth(prob) 
+                                %>
+                            </td>
+                            <td><%= editor tc, :points, "size" => 4 %></td>
+                            <td><%= editor tc, :maxtime, "size" => 4 %></td>    
+                            <td><%= cmpr_editor tc, :comparator_id %></td>
+                            <td>
+                                <% form_tag({:action => 'edit_testcase_del', 
+                                             :as_id => @assignment.id}, 
+                                             :style => "display:inline;") do %>
+                                    <%= hidden_field :testcase, :id, 
+                                        :value => tc.id  %>
+                                    <%= submit_tag 'X' %>
+                                <% end %>
+                            </td>
+                            <td align="right">
+                                <% form_tag({:action => 'edit_testcase_cp', 
+                                             :as_id => @assignment.id}, 
+                                            :style => "display:inline;") do %>
+                                    <%= hidden_field :testcase, :id, 
+                                        :value => tc.id %> 
+                                    <%= problem_select @assignment.problems, 
+                                        :problem, :id %>
+                                    <%= submit_tag 'Copy' %>
+                                <% end %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </td>
+        </tr>
+    <% end %>
+</table>

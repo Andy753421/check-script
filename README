@@ -1,0 +1,57 @@
+See AUTHORS and individual source files for a list of contributors.
+
+libcheck, dpriv, and Webcheck
+=============================
+libcheck is a library written in Ruby that can be used to automatically check
+code by comparing expected and actual output.
+
+dpriv is a SELinux policy and C wrapper that executes arbitrary commands with
+lowered privileges.
+
+Webcheck is a web interface for libcheck designed to be used in a classroom
+setting.
+
+Dependencies
+============
+The included applications are designed to be somewhat modular. They were
+designed to run under Linux but may also be somewhat usable on other platforms.
+Detailed dependencies are listed below.
+
+dpriv: SELinux, C, root access
+libcheck: Ruby, dpriv, Chez Scheme or MzScheme
+Webcheck: Ruby, Ruby on Rails, libcheck, Web server, Database server
+
+Note that libcheck will work without SELinux as long as the dpriv wrapper is
+installed, however using it this way can cause major security vulnerabilities.
+
+Usage
+=====
+Configuring Webcheck is a somewhat more complicated process and is detailed in
+the INSTALL file. Once installed, end user documentation is provided from the
+web interface.
+
+libcheck also contains a sample command line interface called 'check'.
+
+Usage: ./check <testcases> <student_code> [library]
+
+testcases     A YAML file containing a list of testcases.
+student_code  Source code to be checked.
+library       Optional library used while comparing output.
+
+History
+=======
+The Rose-Hulman CSSE Department had originally been using a command line
+program to check student submissions for the CSSE304 course. This original
+script was more difficult for many users and contained several complicated
+security vulnerabilities.
+
+During the 2007-2008 school year two student teams from Rose-Hulman worked to
+rewrite the existing check scripts to be more secure and easier to use. This 
+was completed by the end of Winter quarter. During the Spring the check scripts
+were used by the CSSE304 class.
+
+The initial source repository along with all the document developed during the
+course of the project are archived on the CSSE Department subversion server
+under the repository name '2007-2008_CSSE372_Team9'. This repository is not
+made publicly available because it contains the answers to several assignments
+and project currently being used by CSSE Department.

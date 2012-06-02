@@ -1,0 +1,17 @@
+Important
+---------
+* Add better support for scheme 'error' functions
+
+Others
+------
+* Ability for the system to remember which tab you were on the last time you
+  visited a page, ensuring that that tab is displayed by default the next time
+  you go back to that page
+
+* Ability to associate comments with a problem
+
+* Add admin tab that will allow TAs and professors to edit content of the
+  Whatever page
+
+* Ability to delete all but the most recent submissions of each student for an
+  assignment

@@ -1,0 +1,137 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Global Variables</h2>
+<table>
+    <tr>
+        <th>Variable</th>
+        <th>Value</th>
+    </tr>
+    <%# Maxtime %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :maxtime},
+                    :style => "display:inline;") do %>
+            <td>Maxtime (ms)</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["maxtime"], 
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Output Width %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :output_width},
+                    :style => "display:inline;") do %>
+            <td>Student Output Width</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["output_width"], 
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Error Width %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :error_width},
+                    :style => "display:inline;") do %>
+            <td>Student Error Width</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["error_width"], 
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Testcase width %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :testcase_width},
+                    :style => "display:inline;") do %>
+            <td>Testcase Entry Box Width</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["testcase_width"],
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Testcase height %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :testcase_height},
+                    :style => "display:inline;") do %>
+            <td>Testcase Entry Box Height</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["testcase_height"],
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Answer width %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :answer_width},
+                    :style => "display:inline;") do %>
+            <td>Answer Entry Box Width</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["answer_width"],
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+    <%# Answer height %>
+    <tr>
+        <% form_tag({:action => 'var_mod',
+                     :var_name => :answer_height},
+                    :style => "display:inline;") do %>
+            <td>Answer Entry Box Height</td>
+            <td>
+                <%= text_field :globalvar, :val,
+                               :value => @globalvars["answer_height"],
+                               :size => 5 %>
+            </td>
+            <td>
+                <%= submit_tag 'Update' %>
+            </td>
+        <% end %>
+    </tr>
+</table>

@@ -1,0 +1,40 @@
+Status Report for Logan Price
+Saturday October 10, 2009
+
+Goals for this Week
+--------------------
+ * Get Trac setup.
+ * Finish testing the new supported file types.
+ * Start working on tasks on the TODO list.
+
+Accomplishments for this Week
+-----------------------------
+ * I talked with Mike McLeish again this Monday about the status of getting
+   a Trac project setup for us.  He talked like he was working on this but
+   I haven't heard from him since.
+ * This was a very stressful week as far as working on the Grading Script.
+   Everytime I would try to submit a file to be graded, RAILS would spit out
+   an error and I simply COULD NOT figure out why.  So I finally resorted to 
+   installing Ubuntu on a new partition and reinstalling everything (a BIG task
+   but something I've been wanting to do for a while).  After finally getting
+   everything setup, I found that I still had the same error on the same 
+   Assignment (I imported it from a YAML file).  I then found that I had a 
+   YAML file for a different assignment and tried submitting a file to this
+   new assignment....NO ERROR!  So I'm writing the error off as a bad 
+   assignment.  Reloading Ubuntu may not have been necessary to discover the
+   but I will be able to update the install notes (NOTE: I have not updated 
+   the install notes yet).
+ * Due to reinstalling Ubuntu, I, ofcourse, had to redo the work I did last week
+   on adding support for new file types (thankfully this wasn't hard).  I was
+   even able to test my changes this time!  Everything looks great!
+ * I also noticed that when logged on as an admin, if there are no submissions,
+   trying to view the 'All Submissions' tab will cause an error but I believe
+   that I have fixed this.
+ * Now that I've worked through these bumps, I hope to get lots done over the
+   next week or so.
+
+Goals for next Week
+-------------------
+ * Get Trac configued properly.
+ * Continue working on tasks in the TODO list.
+

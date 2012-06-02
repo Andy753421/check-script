@@ -1,0 +1,10 @@
+:defaults:
+          :comparator: "equal?"
+          :maxtime: 2
+:testcases: 
+        - :expected: "3"
+          :test_code: "(begin (display 'hi)(newline)(display 'bye1)(newline)(display 'bye2))"
+        - :expected: "720"
+          :test_code: "(fact 6)"
+        - :expected: "723"
+          :test_code: "(fact 6)"

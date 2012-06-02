@@ -1,0 +1,83 @@
+-------------------------------------------------------------------------------
+A High-Level Overview of the Components of the PLC Grading System
+-------------------------------------------------------------------------------
+
+    /------------------------\
+    |   Department Server    |  
+    | plc.cs.rose-hulman.edu |
+    \------------------------/
+        
+    /--------------------\
+    |     Web server     |    
+    | LightTPD / Mongrel |
+    \--------------------/
+
+    /--------------------------------------------\
+    |            Rails Application               |
+    |--------------------------------------------|        /--------------\
+    | Views      | Controllers | Models         *|* <-->  |   Database   |
+    |------------|-------------|-----------------|        | MySQL Server |
+    | admin      | admin       | assignment      |        \--------------/
+    | ajax       | ajax        | comparator      |
+    | assignment | application | global_var      |
+    | help       | assignment  | problem         |        /------------------\
+    | layout     | help        | submission     *|* <-->  | Libcheck         |
+    | student    | student     | submitted_file  |        |------------------|
+    | submission | submission  | testcase_output |        | libcheck.rb      |
+    | user       | user        | testcase        |        | ++++++++++++++++ |
+    |            |             | user            |        | lang/chez_scheme |
+    \--------------------------------------------/        | - init.rb        |
+                                                          | - checker.ss     |
+                                                          | - cmper.ss       |
+                                                          \------------------/
+
+Basic Structure of the PLC Grading System
+-------------------------------------------------------------------------------
+The grading system is run on one of the CS Department's servers (Mike McLeish 
+should know which one, if any hardware problems come up). That server runs 
+several different applications that get used by the PLC grading program. The 
+first is the web server software, which handles all web requests and things of 
+that nature. Currently LightTPD is being used for this, but Mongrel may 
+actually be better for handling concurrent user requests. This is something 
+that should be looked into in the near-future. 
+
+The actual PLC grading program is a Rails application (for more information 
+on Ruby on Rails, refer to Wikipedia - the remainder of this document assumes 
+a basic knowledge of the structure of Ruby on Rails). On the CS Department's 
+server itself these files are located at /var/www/rails. The Rails application 
+can be launched on the server itself by running the command 
+    $ /etc/init.d/rails start
+Other commands include the following
+    $ /etc/init.d/rails stop
+    $ /etc/init.d/rails restart
+These commands were configured by Andy Spencer to make it easy to start, stop, 
+and restart the grading program. Running start or restart will automatically 
+start the web server application (as mentioned previously, this is currently 
+LightTPD). Note: In order to launch the Rails application on your local 
+machine, you just need to run ./script/server from your Rails application 
+directory. This will automatically start the default webserver, which is 
+Webbrick. Webbrick is not suited for a production environment and should only 
+be used for development purposes. 
+
+The next component of the grading program is the grader. This component 
+handles reading in student code, running it through a set of test cases, and 
+comparing the students' answers to the expected output. The grader consists 
+of some Ruby classes (init.rb, libcheck.rb, and pio.rb) as well as some Scheme 
+code (checker.ss and cmper.ss). Originally the grader was designed so that 
+it could be run using either Chez Scheme or MzScheme, but due to some 
+differences between the two languages support for MzScheme has been 
+discontinued. The server itself has Chez Scheme installed (the school has a 
+site license for it), but Petite Chez Scheme can be used on other machines for 
+development purposes. 
+
+The grader component is run as a separate process from the web application, 
+and interaction between the two components is handled by the use of the 
+components' stdin and stdout streams. This was done to allow the grader itself 
+to be isolated from the web interface when running student code, which should 
+prevent malicious student code from interacting with the web interface. 
+
+The final component of the grading program is dpriv, which is designed to 
+allow the grader to be run with lower privileges through SELinux security 
+policies. This is not needed to run the grading program itself, though. 
+Currently the configuration process is not well-documented, so more research 
+and documentation is needed. It is not currently a priority, though.

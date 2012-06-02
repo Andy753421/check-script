@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# username			:string
+# role				:string
+# disabled			:boolean
+
+one:
+  id: 1
+  username: sauppejj
+  role: TA
+  disabled: false
+two:
+  id: 2
+  username: anderson
+  role: Professor
+  disabled: false
+three:
+  id: 3
+  username: oldstudent
+  role: Student
+  disabled: true

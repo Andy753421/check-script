@@ -1,0 +1,28 @@
+Status Report for Logan Price
+Friday October 2, 2009
+
+Goals for this Week
+--------------------
+ * Get Trac setup.
+ * Start working on tasks on the TODO list.
+
+Accomplishments for this Week
+-----------------------------
+ * I talked with Mike McLeish on Monday and he said that he would take care of
+   getting us set up with a Trac project (this will include the task of moving
+   the repository from one machine to another).  He said that he would send an 
+   email to us when all is said and done.  If I don't hear from him by the first
+   to middle of next week I will contact him again.
+ * I began working on a few of the TODO items.  The most non-trivial one being
+   adding support for RAR, BZIP, and GZIP file types (I decided to start with
+   something smaller and work into the more critical tasks).  I think I've
+   completed everything necessary for this to work, however I have not tested 
+   this completely.  I also haven't committed any code for that same reason.
+   Note that when I do commit, my status reports will be in a directory named
+   "status reports" in the "doc" folder.
+
+Goals for next Week
+-------------------
+ * Finish testing the new supported file types.
+ * Get Trac configued properly.
+ * Continue working on tasks in the TODO list.

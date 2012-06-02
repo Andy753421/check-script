@@ -1,0 +1,78 @@
+/*
+Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Tab styles */
+.notebook .tabbar {
+	margin:0;
+	padding:0 0.5em 0 0.5em;
+	overflow:hidden;
+}
+.notebook .tabbar .tab {
+	/* Was display:table; but then it cant
+	 * nest in real tables */
+	display:table-cell;
+
+	white-space:nowrap;
+
+	line-height:1em;
+	float:left;
+	z-index:0;
+
+	margin-right:0.5em;
+
+	color:black;
+	background-color:#eee;
+	border:solid 1px black;
+
+}
+.notebook .tabbar .tab,
+.notebook .tabbar .tab * {
+	/* not sure how to set this dynamically,
+	 * cant use large values because
+	 * IE wont hide overflow */
+	padding-bottom:2.9em;
+	margin-bottom:-2.9em;
+}
+.notebook .tabbar .tab *,
+.notebook .tabbar .active {
+	padding-left:0.4em;
+	padding-right:0.4em;
+}
+.notebook .tabbar .tab a:hover,
+.notebook .tabbar .active,
+.notebook .tabbar .semi {
+	background-color:#d00;
+	color: white;
+}
+.notebook .tabbar .tab a {
+	display:block;
+	text-decoration:none;
+	color:black;
+}
+
+/* Tab body */
+.notebook .tabbody {
+	clear:both;
+	padding:0.5em;
+	background-color:white;
+	border-top:solid 1px black;
+	z-index:1;
+}
+.notebook .tabbody .tabbody {
+	/* margin:0.0em -0.5em -0.5em -0.5em; */
+	/* border-width:1px 0px 0px 0px; */
+}

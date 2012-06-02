@@ -1,0 +1,49 @@
+policy_module(dpriv,1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+type dpriv_t;
+type dpriv_exec_t;
+#domain_type(dpriv_t)
+application_domain(dpriv_t, dpriv_exec_t)
+role system_r types dpriv_t;
+
+########################################
+#
+# dpriv local policy
+#
+# Check in /etc/selinux/refpolicy/include for macros to use instead of allow rules.
+#gen_require(`type all_t;')
+
+# internal communication is often done using fifo and unix sockets.
+allow dpriv_t self:fifo_file { read write };
+allow dpriv_t self:unix_stream_socket create_stream_socket_perms;
+allow dpriv_t self:process { execstack execmem getsched };
+
+# allow execute
+allow dpriv_t file_type:file { execute execute_no_trans };
+
+# Some common macros (you might be able to remove some)
+libs_use_ld_so(dpriv_t)
+libs_use_shared_libs(dpriv_t)
+
+# Allow reading
+files_read_all_files(dpriv_t)
+files_read_all_symlinks(dpriv_t)
+files_search_all(dpriv_t)
+files_list_all(dpriv_t)
+
+# What does this doo
+optional_policy(`
+	gen_require(`
+		type unconfined_t;
+		type unconfined_devpts_t;
+		type unconfined_tty_device_t;
+		role unconfined_r;
+	')
+
+	dpriv_run(unconfined_t, unconfined_r, { unconfined_tty_device_t unconfined_devpts_t })
+')

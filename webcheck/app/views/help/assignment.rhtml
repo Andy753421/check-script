@@ -1,0 +1,158 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Assignment Menu Help</h2>
+<p> The Assignments menu allows you to manage the assignments that are in 
+the system. The tabs at the top of the page allow you to select from the 
+various assignments that already exist and are listed as visible (see the 
+Admin Help pages for more detail on this). You can also click on 
+the <b>New</b> tab to create a new assignment.</p>
+
+<h4>1. Assignment - Problem - Testcase Overview</h4>
+<p>Classwork in CSSE 304 is broken up into Assignments. Each Assignment 
+consists of several Problems, and each Problem is usually just a function 
+that the students have to implement. A single Problem is then broken up 
+into multiple test cases that contain calls to the students' functions 
+along with the expected results. When a student submission is graded, each 
+test case gets run and the students' output gets stored. After that, the 
+output is compared to the expected answer and the result of the comparison 
+is stored (true if the student passed, false if not). These results will be 
+saved for later use in regrading assignments and displaying full reports.</p>
+
+<h4>2. Assignment Details</h4>
+<p>Under the Assignment Details section you can edit the various components 
+of an assignment. These include:
+<ul>
+    <li>
+        <b>Name</b> - The name of the assignment
+    </li>
+    <li>
+        <b>Maxtime</b> - The maximum amount of time that students get for 
+           any particular test case associated with that assignment (this 
+           value is overridden if a maxtime is specified for a particular 
+           problem or test case)
+    </li>
+    <li>
+        <b>Available</b> - The available date determines when the assignment 
+           will become visible to students
+    </li>
+    <li>
+        <b>Due</b> - The due date that determines when the assignment is due 
+           (students are not restricted from submitting files for an assignment
+           after the due date because they have the option of using late days; 
+           instead the due date is there for informative purposes)
+    </li>
+    <li>
+        <b>Comparator</b> - The function that should be used to compare 
+           student output to the expected answer for all test cases (this can 
+           be overridden by specifying a comparator function for a problem or 
+           a test case)
+    </li>
+    <li>
+        <b>Modules</b> - This specifies what module should be loaded before 
+           executing the student code with the test cases; this can be used 
+           to define functions that are used in the test cases or to specify 
+           additional modules to load
+    </li>
+    <li>
+        <b>Points</b> - The total points for this assignment. This value 
+           cannot be modified directly; it is the sum of the point values for 
+           all test cases associated with that assignment
+    </li>
+</ul>
+After editing these values, click the <b>Save</b> button to update the 
+assignment details.</p>
+
+<p>Note: The day of the week that is listed by the Available and Due date 
+selection boxes is only updated after the Save button is pressed.</p>
+
+<h4>3. Problems</h4>
+<p>Under the Problems section you can add new problems to an assignment and 
+edit or delete existing problems. Click the <b>New Problem</b> button to add 
+a new blank problem to this particular assignment. Once the problem has been 
+added, you can modify problem detalis by editing the specific fields. These 
+include:
+<ul>
+    <li>
+        <b>Name</b> - This is name / description of the problem 
+           (first text field)
+    </li>
+    <li>
+        <b>Comparator</b> - A comparator function can be specified here to 
+           override the assignment comparator function for this particular 
+           problem; A value of Default means that the comparator function for 
+           the assignment will be used
+    </li>
+    <li>
+        <b>Maxtime</b> - The maximum time that any test case associated with 
+           this problem is allowed to run for; This overrides the maxtime 
+           specified in the assignment details if it is not empty
+    </li>
+    <li>
+        <b>Points</b> - The total points for this problem. This value is 
+           modified indirectly by changing the point values of test cases 
+           associated with this problem.
+    </li>
+</ul>
+Also, you can copy a problem and its associated test cases from the selected 
+assignment to another assignment. To do so, select the assignment that you 
+wish to copy the problem to using the <b>Copy to:</b> drop-dowm menu and 
+click the <b>Copy</b> button. Existing problems can be deleted by clicking 
+the <b>X</b> button.</p>
+
+<h4>4. Test Cases</h4>
+<p>Click the <b>+</b> icon next to each problem to expand it and display 
+the test cases for that particular problem (a <b>-</b> will be displayed for 
+expanded problems that will collapse the problem when clicked). The test cases 
+that are displayed can be edited by clicking in the appropriate fields. 
+These include:
+<ul>
+    <li>
+        <b>Test Code</b> - This is the Scheme code that will execute for 
+           this particular test case. Usually this will involve a call to 
+           one of the functions that the students need to write for the 
+           assignment. The result of this call will be recorded as the 
+           students' output for this particular test case.
+    </li>
+    <li>
+        <b>Correct Answer</b> - This is the Scheme value that is expected to 
+           be returned when the Test Code is evaluated. The comparator 
+           function that is specified will be used to compare the students' 
+           output to the correct answer.
+    </li>
+    <li>
+        <b>Points</b> - This is the number of points that the student will 
+           earn if they pass this test case.
+    </li>
+    <li>
+        <b>Maxtime</b> - This is the maximum amount of time that the students' 
+           code will be allowed to run for this particular test case. This 
+           overrides times specified by either the problem or the assignment.
+    </li>
+    <li>
+        <b>Comparator</b> - This is the particular comparator function that 
+           will be used to compare the students' output with the expected 
+           answer. This overrides the comparator function specified by the 
+           problem and the assignment.
+    </li>
+</ul>
+Blank test cases can be added to a problem by clicking the <b>New Testcase</b> 
+button. Existing test cases can be deleted by clicking the <b>X</b> button. 
+Test cases can be copied to another problem in the assignment by selecting the 
+problem from the <b>Copy to:</b> drop-down menu and clicking the <b>Copy</b> 
+button.</p>

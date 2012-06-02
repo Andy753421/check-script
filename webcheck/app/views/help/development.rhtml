@@ -1,0 +1,74 @@
+<%
+# Copyright (C) 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Development</h2>
+<p>For a list of authors and copyright information please look at the the 
+AUTHORS and source codes files in subversion.</p>
+
+<h4>Obtaining code</h4>
+<p>The code for this website is available under the terms of the 
+<a href="http://www.fsf.org/licensing/licenses/agpl-3.0.html">
+GNU Affero General Public License</a>. The source code can be accessed though 
+anonymous SVN and is hosted on Rose-Hulman's CSSE Department Subversion 
+server. To checkout a copy use the following commands or a similar GUI 
+tool:</p> 
+
+<p class="code">
+svn co http://svn.cs.rose-hulman.edu/repos/check-script/trunk/ check-scripts
+</p>
+
+<p>The original subversion repository is archived on the CSSE Department
+subversion server under the name '2007-2008_CSSE372_Team9'. This repository is
+not publicly available because it contains answers to several assignments and
+project that are currently being used.</p>
+
+<p>Additional development information is available in subversion under /trunk
+and /trunk/doc.</p>
+
+<h4>Components</h4>
+<ul>
+	<li style="list-style:none;"><b>libcheck</b> is a library written in Ruby 
+      that can be used to automatically check code by comparing expected and 
+      actual output.</li>
+  <li style="list-style:none;"><b>dpriv</b> is a SELinux policy and C wrapper 
+      that executes arbitrary commands with lowered privileges.</li>
+  <li style="list-style:none;"><b>Webcheck</b> is this web interface for 
+      libcheck. It is designed to be used in a classroom setting.</li>
+</ul>
+
+<h4>Dependencies</h4>
+<p>The included applications are designed to be somewhat modular. They were
+designed to run under Linux but may also be somewhat usable on other platforms.
+Detailed dependencies are listed below.</p>
+
+<ul>
+	<li style="list-style:none;"><b>dpriv</b> - SELinux, C, root access</li>
+	<li style="list-style:none;"><b>libcheck</b> - Ruby, dpriv, Chez Scheme or 
+      MzScheme</li>
+	<li style="list-style:none;"><b>Webcheck</b> - Ruby, Ruby on Rails, 
+      libcheck, Web server, Database server</li>
+</ul>
+
+<h4>Contributing</h4>
+<p>If you find bugs in this software (especially security holes) please report
+them to one of the TAs for the course so that they can be repaired. If you
+like, you are encouraged to fix them yourself and submit a patch files. A patch
+file can be obtained by running <b class="code">svn diff</b> from your
+subversion working copy once you have made changes.</p>
+
+<p>If you contribute patches often or have a desire to contribute further you
+may consider asking one of the professors to add your Kerberos account to the
+list of developers so that you can commit changes directly.</p>

@@ -1,0 +1,221 @@
+*******************************************************************************
+Changes/enhancements to PLC grading program
+*******************************************************************************
+3   IN PROGRESS
+    When starting the program or after clicking on "submissions" or 
+    assignments", show the last assignment viewed, instead of always going 
+    back to the "default" assignment.
+
+3   Have an option to hide the test cases for which the student answer is 
+    correct.
+
+2   A way for the instructor to delete all but the most recent submission 
+    by each student for a given assignment (after the assignment has been 
+    completely graded).
+
+2   Ability to generate score statistics for an assignment, a problem, or 
+    a test case.  What was the average score for {active users, all 
+    historic users}?  Can there be a way of keeping track of a problem 
+    that appears in different assignments (in different years)?
+
+    IN PROGRESS 
+    Tell student when the code they submit fails to load (instead of just 
+    giving them all 0's for tests)
+
+    IN PROGRESS
+    Keep track of who submitted a team assignment (this is not implemented yet)
+    To do this, add a boolean-valued column to the submissions_users table 
+    that indicates whether the student was the original submitter
+
+    IN PROGRESS
+    Make student reports and student code displays show in new windows.
+ 	Add "Report & Code" link to the Submissions page to display report and code
+	in the same window, side by side.
+	
+	Login page: Change "Kerberos" to "RHIT Network"
+
+    Ability to specify users for whom an assignment is not available, 
+    regardless of the assignment availability status
+
+    Prevent student calls to trace-lambda, trace-let, and similar functions.
+
+    Ability to add comments on student submissions
+    Idea: add a text file that contains all comments for one student,
+    write to it when professor adds comment to particular problem, etc.
+    Student is able to view it and is notified somehow of changes
+
+    Ability for students to delete submissions (actually hide them).
+   
+    Ability for TAs/Profs to show hidden submissions on a per-assignment basis.
+
+    Arrange exported assignment details in a more user-friendly order
+
+    Have a way to view the log files from the admin page
+
+	Add button for "deleting all but the most recent submissions for active 
+    users" in the Submissions tab.
+
+	Add choosing of sort for submissions (user then time, reverse time, etc.)
+	possibly in a new top-level tab.
+
+    The ability to specify which section of the course a student belongs to.
+
+    The ability to set different available, due, and late day end times for 
+    an assignment for each section of the course.
+	
+	TRACK LATE DAY TOTALS  First this will require giving each assignment a 
+    sequence number, and a field that indicates whether early or late days 
+    are allowed for each assignment.
+	Now that we can tell for each assignment whether an assignment is early or 
+    late, why not keep track of and display each student's current number of 
+    remaining late days?
+	I have many ideas about how this might work, which we can discuss whenever 
+    someone has time to work on this.
+	
+	Remove the list of usernmaes from the left of the Submissions page, since 
+    it is non-functional.
+	
+	Change the "import assignment from old test case format" so it preserves 
+    newlines and spacing.
+	
+	On the submissions page, somehow flag it if the same person had an earlier 
+    submission whose score was greater.  Doing this efficiently may require a 
+    new table that tracks person/assignment/largestScore.
+
+*******************************************************************************
+Things to Check
+*******************************************************************************
+	Look into how threading between multiple concurrent users is handled and 
+	find the effects upon grading speed.
+
+	Look into using Mongrel instead of lighttpd.
+	
+*******************************************************************************
+Finished Features
+*******************************************************************************
+5   DONE
+    Copying a problem from one assignment to another does not seem to work. 
+    This is the most important thing to fix, I think.
+
+5   DONE
+    Currently when displaying submission results, everything is on one 
+    line, making the submission info very hard to read in many cases. Use 
+    pretty-print, or something like it. The width of the pretty-printed 
+    outbox should be one of the options for a problem (with an instructor-
+    modifiable default pretty-print width for the whole assignment).
+
+5   NOTE - Think this is because Schiavoni's Assignment 5 submission wasn't 
+    correct; when run in DrScheme his code threw errors because of 
+    incorrect definitions for occurs-bound?
+    Figure out why the server gets messed up so easily. IN particular with 
+    Schiavoni's Assignment 5 submission.
+
+4   DONE
+    When you are editing an assignment (or its test cases) and click
+    "save", the program should take  you back to the same assignment, 
+    not to assignment #1.
+
+4   DONE
+    A way to score test cases that are supposed to generate a particular 
+    kind of error (Will the way I dealt with it in the original scheme 
+    grading program work here?)
+
+3   DONE
+    A way to order problems within an assignment
+
+3   DONE
+    A way for the instructor to delete individual submissions.
+
+3   DONE (All Submissions page has no filters on submissions)
+    Default for "Show All Submissions" shows only submissions from active 
+    students. Perhaps on that page, there can be a button for "also show 
+    past submissions" .
+
+2   DONE
+    Display assignments in lexicographical order, not the order they happen 
+    to come out of the database
+
+2   DONE (format is YAML)
+    Have an external text format (scheme-like or XML?) for an assignment so 
+    I can export several assignments to that format, use a text editor to 
+    rearrange them, and then import the new assignment back into the system.
+
+2   DONE
+    Give instructor control over size of text boxes for input of test cases. 
+    Best: vary it for individual problems.  Okay: one setting for all 
+    problems.
+
+2   DONE
+    The ability to have an assignment be visible, but students unable to 
+    submit (after the assignment is due)
+
+1   DONE - Assignments are not visible to students until after the 
+    Available date
+    A way for the instructor to make an assignment visible to instructors 
+    but not students during the time when the test cases are being composed.
+
+1   DONE - (To disable submissions, just set late day deadline)
+    The ability to pre-set a time when submissions will no longer be 
+    accepted (for programs that are due at midnight, etc.)
+
+    DONE
+    Ensure that calls to (load "chez-init.ss") get handled correctly in all 
+    cases. 
+
+    DONE
+	Fix errors thrown when students submit code with (trace ...) and other 
+    similar functions by defining them as do-nothing functions in the grader 
+    itself.
+
+    DONE
+    Re-arranging report display: Score - Testcase - Correct Answer - 
+    your answer - errors
+
+    DONE
+    Ability to export a list of student usernames + scores for an assignment
+
+    DONE
+    Display the number number of active students on the admin page
+
+    DONE 
+    For student->report page, add light gray shading for either every other 
+    column or every other test case.
+ 
+    DONE
+    Add question number boxes to assignments and order assignments by their 
+    number to allow for question reordering.
+
+    DONE
+    Lighten up the colors on the checkerboard background a bit.
+
+    DONE
+    Instructor has access to a student view to see what students can see.
+
+    NOT NEEDED 
+    Ability to export assignments to the importable format from the old script.
+
+    DONE
+    Change score calculation so that it's not done every time it needs to be 
+    displayed. There is a score column in the submissions table so put the 
+    score there after a submission is graded/regraded. Then just replace 
+    score calculations with a look-up, which should make things load faster.
+
+    DONE
+    Clicking on the selected tab should load that tab. So when a student views 
+    a report, clicking on the assignment tab should take the student back to 
+    that assignment page (currently it is not 'click-able', so the student 
+    has no direct way of getting back to that page other than the browser's 
+    back button or clicking on another tab and then back again)
+
+    DONE
+    Add a final deadline date after which we stop accepting submissions
+    (regardless of late day usage)
+
+    DONE
+	Simplify export of grades: (username, score) only.
+
+    DONE
+	Switch timeout values to milliseconds.
+
+    DONE
+    	Add support for RAR, GZIP, and BZIP files.

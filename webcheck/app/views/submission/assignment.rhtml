@@ -1,0 +1,161 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<% if @assignment != nil %>
+    <% form_tag({:controller => 'student', 
+                 :action => 'assignment_regrade_all', 
+                 :as_id => @assignment.id}, 
+                :style => "display:inline;") do %>
+        <%= submit_tag 'Re-grade All Submissions' %>
+    <% end %>
+<% else %>
+    No submissions to re-grade
+<% end %>
+
+<% if @assignment != nil %>
+    <% form_tag({:controller => 'submission',
+                 :action => 'export',
+                 :as_id => @assignment.id},
+                :style => "display:inline;") do %>
+        <%= submit_tag 'Export Most Recent Submissions' %>
+    <% end %>
+<% else %>
+    No assignment grades to export
+<% end %>
+
+<h2>Active Students' Most Recent Submissions</h2>
+<% if @filtered_submissions == nil || @filtered_submissions.empty? %>
+    No Submissions
+<% else %>
+    <% @max_score = @assignment.max_score %>
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Time Submitted</th>
+            <th>Group Members</th>
+            <th>Reports</th>
+            <th>Files</th>
+            <th>Grade</th>
+            <th>Delete</th>
+        </tr>
+        <% @filtered_submissions.each do |sub| %>
+            <tr>
+                <td><%= sub.username %></td>
+                <% if sub.submission_id != nil %>
+                    <td><%= sub.score %> / <%= @max_score %></td>
+                    <% if (@assignment.due and @assignment.late_day_end) %>
+                        <% if ((sub.timestamp <=> 
+                                (@assignment.due - 86400)) <= -1) %>
+                            <td class="assnEarly">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% elsif ((sub.timestamp <=> @assignment.due) <= -1) %>
+                            <td class="assnOnTime">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% elsif ((sub.timestamp <=> 
+                                @assignment.late_day_end) <= -1) %>
+                            <td class="assnLate">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% else %>
+                            <td class="assnElse">
+                                <%= sub.timestamp.strftime("%c") %>
+                            </td>
+                        <% end %>
+                    <% else %>
+                        <!-- For whatever reason, the due date and/or the late 
+                             day end date are not defined, so don't color -->
+                        <td><%= sub.timestamp.strftime("%c") %></td>
+                    <% end %>
+                    <td><%= sub.usernames %></td>
+                    <td><%= link_to("Report", 
+                                    :controller => 'student', 
+                                    :action => 'report', 
+                                    :as_id => sub.assignment_id,
+                                    :sub_id => sub.id) %></td>
+                    <td><%= link_to("Code", 
+                                    :controller => 'student', 
+                                    :action => 'code', 
+                                    :as_id => sub.assignment_id,
+                                    :sub_id => sub.id) %></td>
+                    <td><%= link_to("Regrade", 
+                                    :controller => 'student', 
+                                    :action => 'assignment_regrade', 
+                                    :as_id => sub.assignment_id,
+                                    :sub_id => sub.id) %></td>
+                    <td><% form_tag({:controller => 'submission',
+                                     :action => 'sub_del',
+                                     :sub_id => sub.id},
+                                     :style => "display:inline;") do %>
+                            <%= submit_tag 'X' %>
+                        <% end %>
+                    </td>
+                <% else %>
+                    <td>0 / <%= @max_score %></td>
+                    <td>No submission</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                <% end %>
+            </tr>
+        <% end %>
+    </table>
+<% end %>
+
+<h2>Assignment Details</h2>
+<%# This was assignment_details(@assignment) > %>
+<% if @assignment != nil %>
+    <table class="tuple">
+        <tr>
+            <td>Available:</td>
+            <td><%= @assignment.available.strftime("%c") unless
+                    @assignment.available.nil? %></td>
+        </tr>
+        <tr>
+            <td>Due:</td>
+            <td><%= @assignment.due.strftime("%c") unless 
+                    @assignment.due.nil? %></td>
+        </tr>
+        <tr>
+            <td>Late Day Deadline:</td>
+            <td><%= @assignment.late_day_end.strftime("%c") unless
+                    @assignment.late_day_end.nil? %></td>
+        </tr>
+        <tr>
+            <td>Problems:</td>
+            <td>
+                <% probs = @assignment.problems.sort{|x, y|
+                    if (x.number == nil)
+                        (-1)
+                    elsif (y.number == nil)
+                        (1)
+                    else
+                        (x.number <=> y.number)
+                    end} %>
+                <% probs.each do |prob| %>
+                    <%= prob.number %> - <%= prob.description %><br>
+                <% end %>
+            </td>
+        </tr>
+    </table>
+<% end %>
+

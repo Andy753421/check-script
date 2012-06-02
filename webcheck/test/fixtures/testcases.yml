@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# problem_id		:integer
+# test_code			:text
+# maxtime			:integer
+# points			:integer
+# correct_answer	:text
+# comparator_id		:integer
+
+one:
+  id: 1
+  problem_id: 1
+  test_code: (findMin (list 1 2 3 4))
+  points: 2
+  correct_answer: 1
+two:
+  id: 2
+  problem_id: 2
+  test_code: (findLast (list '(1 2) '(3 4) '(5 6)))
+  points: 5
+  correct_answer: (5 6)

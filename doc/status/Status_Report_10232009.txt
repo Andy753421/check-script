@@ -1,0 +1,35 @@
+Status Report for Logan Price
+Sunday October 25, 2009
+
+Goals for this Week
+--------------------
+ * Get Trac setup.
+ * Continue working on tasks on the TODO list.
+
+Accomplishments for this Week
+-----------------------------
+ * As a result of reloading Ubuntu a couple weeks ago, I discovered why exactly
+   I was getting an error after uploading files to certain assignments.  It was
+   actually a timing issue.  The test cases for the particular assignment to 
+   which I was submitting were not allowing the script enough time to grade the
+   problem.  As a result, when the grader read in from the stdout the result
+   was a nil.  That is why I kept getting a "can't convert from type nil to
+   type String" error!  After increasing the allotted time for each test case,
+   it worked like a charm.  Seems like this will be something that we'll want
+   to look into later.
+ * Began working on the first task on the TODO list.  That is, having a way to 
+   rememember what tab was selected when switching from one view to another.
+   While working on this, I found it very helpful to make a very basic class
+   diagram of all the classes in the app/ folder.  Hopefully, I will be able
+   to include more detail in this diagram and it will prove useful for others
+   that need to become familiar with the Grading Script.  Anyway, I have not
+   yet thought of a good way to implement this tab "remembering".
+
+Goals for next Week
+-------------------
+ * Get Trac setup (if Mike happens to get the project setup for us)
+ * Finish the task I'm working on.
+ * Continue working on items in the TODO list.
+
+
+

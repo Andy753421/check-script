@@ -1,0 +1,89 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<?xml version="1.0" encoding="utf-8"?>
+<%# response.headers["Content-Type"] = "application/xhtml+xml; charset=utf-8"; %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <%= javascript_include_tag "common.js"%>
+        <title><%= @title || "#{params[:controller]} - #{params[:action]}" %></title>
+        <%= stylesheet_link_tag 'scaffold' %>
+        <%= stylesheet_link_tag 'notebook' %>
+        <%= try_include("#{params[:controller]}_head") %>
+    </head>
+    <body>
+        <% unless flash.empty? %> 
+            <div id="flash">
+                <% flash.each do |type, mesg| %>
+                    <div class="<%= type %>"><%= mesg %></div>
+                <% end %>
+            </div>
+        <% end %>
+
+        <% if (session[:user] != nil) %>
+            <h2 id="mainmenu">
+                <span style="float:right;">
+                    <%= link_to "logout", :controller => 'user', :action => 'logout' %>
+                </span>
+                <% if (session[:user].student?) %>
+                    <%= 
+                        try_link_to("Student", :controller => 'student') + 
+                        try_link_to("Help", :controller => 'help') 
+                    %>
+                <% elsif (session[:user].professor? || session[:user].ta?) %>
+                    <%= # get rid of whitespace between elements
+                        try_link_to("Student", :controller => 'student') +
+                        try_link_to("Help", :controller => 'help') +
+                        try_link_to("Assignments", 
+                                        :controller => 'assignment') +
+                        try_link_to("Submissions", 
+                                        :controller => 'submission',
+                                        :action => 'assignment') +
+                        try_link_to("All Submissions",
+                                        :controller => 'submission',
+                                        :action => 'all') +
+                        try_link_to("Admin", :controller => 'admin')
+                    %>
+                <% end %>
+            </h2>
+        <% end %>
+        <div id="content">
+            <% notebook(@tabs) do %>
+                <%# Find a better way to do this test.. %>
+                <%= try_include("#{params[:controller]}") || yield %>
+            <% end %>
+            <br style="clear:both;" />
+        </div>
+        <div id="footer">
+        <!-- 
+            <%= link_to("Help",     :controller => 'help', 
+                                    :action => 'student') %>
+            <%= link_to("About",    :controller => 'help', 
+                                    :action => 'about') %>
+            <%= link_to("Whatever", :controller => 'help', 
+                                    :action => 'whatever') %>    
+        -->
+            <%= link_to("© 2008",   :controller => 'help', 
+                                    :action => 'development') %>
+        </div>
+    </body>
+</html>

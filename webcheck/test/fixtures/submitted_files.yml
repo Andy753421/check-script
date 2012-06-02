@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# name				:string
+# data				:binary
+# filetype			:string
+# submission_id		:integer
+
+one:
+  id: 1
+  name: 1.ss
+  data: (define findMin car) (define findLast (lambda (ls) (if (null? (cdr ls)) (car ls) (findLast (cdr ls)))))
+  filetype: .ss
+  submission_id: 1

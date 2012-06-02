@@ -1,0 +1,11 @@
+*~
+.svn
+
+webcheck/database.yml
+webcheck/config/database.yml
+webcheck/db/schema.rb
+webcheck/log/*
+webcheck/tmp/cache/*
+webcheck/tmp/pids/*
+webcheck/tmp/sessions/*
+webcheck/tmp/sockets/*

@@ -1,0 +1,98 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Admin Menu Help</h2>
+<p>The Admin menu allows professors and teaching assistants to perform 
+various administrative tasks. These include user, comparator, module, and 
+assignment management.</p>
+
+<h4>1. Users</h4>
+<p>This menu allows basic management of the users in the system. The three 
+attributes of a user are:
+<ul>
+    <li>
+        <b>Username</b> - The name that identifies a user in the system. 
+        This corresponds to the person's Kerberos username.
+    </li>
+    <li>
+        <b>Role</b> - The privilege level that the user has. The three roles 
+        are Professor, TA (Teaching Assistant), and Student. Students have 
+        limited access to the Student and Help pages and are only able to 
+        perform basic actions like submitting code for an assignment or 
+        viewing a report. Professors and TAs have full access to the system, 
+        and there is virtually no difference between the two at this point in 
+        time.
+    </li>
+    <li>
+        <b>Active</b> - Being Active means that the user is currently 
+        involved with the course in some way. This could mean that the 
+        user is a student in the class, a TA for the class, or one of the 
+        Professors who teaches the class. Once a student has completed the 
+        class, the student's status is set to inactive, meaning that they are 
+        no longer able to log in to the system. However, that student's 
+        submissions and records are retained in the database.
+    </li>
+</ul>
+To add a new user, enter the username in the blank box at the bottom of the 
+list. Set the appropriate role and activity status and 
+click <b>Create New</b> to add the user.</p>
+
+<p> Additionally, a group of users can be added at one time by entering 
+the usernames in the <b>Batch Addition of Users</b> field. Usernames can be 
+delimited by any non-alphanumeric characters (use spaces for simplicity). 
+Once all usernames are entered, click the <B>Save changes</b> button to 
+add all the users. A message will appear at the top of the page indicating 
+which users were added successfully and which weren't. All users are 
+Active Students by default.</p>
+
+<h4>2. Comparators</h4>
+<p>The Comparators menu allows you to create, edit, or delete comparator 
+functions from the system. A comparator function consists of a name and a 
+procedure definition that gets applied to the correct answer and the 
+student's output for a test case (in that order). The result of this procecure 
+application should be a boolean value indicating whether or not the student's 
+output is an acceptable answer based on the expected answer.</p>
+
+<h4>3. Modules</h4>
+<p>Modules are Scheme files that get loaded before the grading for an 
+assignment begins. Modules can define procedures that get called when 
+running the grading program on students' code. Additionally, modules can 
+load other modules that exist in the system. To add a module, click 
+the <b>Browse</b> button to locate the appropriate .ss file and then click 
+the <b>Upload</b> button. The code for a module can be viewed with 
+the <b>View</b> link and modules can be deleted from the system by 
+clicking on the <b>X</b> button.</p>
+
+<h4>4. Assignments</h4>
+<p>From the Assignments menu, existing assignments can be copied or deleted 
+using the <b>Copy</b> or <b>X</b> buttons. Additionally, the assignment name 
+can be modified from here. The remaining two options for assignments are:
+<ul>
+    <li>
+        <b>Visible</b> - Assignments that are visible will display in the 
+        selection tabs at the top of the Assignments, Submissions, and Student 
+        pages.
+    </li>
+    <li>
+        <b>Show Full Report</b> - This checkbox can be used by the professor 
+        or TAs to make full grade reports available to students for the 
+        assignment. Limited reports will be displayed for assignments that 
+        have this option unchecked.
+    </li>
+</ul>
+</p>

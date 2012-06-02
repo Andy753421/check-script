@@ -1,0 +1,66 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Comparators</h2>
+<table>
+    <tr>
+        <th>Comparator Name</th>
+        <th>Code</th>
+    </tr>
+    <% @comparators.each do |comp| %>
+        <tr>
+            <% form_tag({:action => 'comparator_mod', 
+                         :comp_id => comp.id}, 
+                         :style => "display:inline;") do %>
+                <td><%= text_field :comparator, :name, 
+                                   :value => comp.name, :size => 12 %>
+                </td>
+                <td>
+                    <%#= block_editor comp, :code,
+                                           "name" =>"code",
+                                           "rows" =>5,
+                                           "cols" =>24 %>
+                    <%= text_field :comparator, :code, :value => comp.code %>
+                </td>
+                <td>
+                    <%= submit_tag 'Update' %>
+                </td>
+            <% end %>
+            <td>
+                <% form_tag({:action => 'comparator_del', 
+                             :comp_id => comp.id}, 
+                            :style => "display:inline;") do %>
+                    <%= submit_tag 'X' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+    <tr>
+        <% form_tag :action => 'comparator_add' do %>
+            <td>
+                <%= text_field :comparator, :name, :size => 12 %>
+            </td>
+            <td>
+                <%= text_field :comparator, :code  %>
+            </td>
+            <td>
+                <%= submit_tag 'Create New' %>
+            </td>
+        <% end %>
+    </tr>
+</table>

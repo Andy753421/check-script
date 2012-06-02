@@ -1,0 +1,48 @@
+This must be hosted on a GNU/Linux machine with SELinux policies enabled.
+
+Download the project files to their own directory.
+
+Install Dependencies
+--------------------
+Install Ruby
+Install Ruby-Gems
+Install Ruby on Rails
+Install RubyLDAP
+Install MySQL
+Install MzScheme
+
+Set up dpriv
+------------
+Navigate to 'dpriv'
+Run 'make'
+Run 'make install'
+
+Set up Webcheck
+---------------
+Create a database, and user with permission on the database.
+Record these in config/database.yml
+
+Navigate to 'webcheck'
+Run 'rake db:migrate'
+
+Configure authentication
+------------------------
+Append the following to /etc/openldap/ldap.conf
+
+TLS_REQCERT allow
+REFERRALS off
+
+Start the server
+----------------
+./webcheck/scripts/server
+
+Setup SSL (Recommended)
+-----------------------
+Read doc/SSL
+
+Setup boot services (Optional)
+------------------------------
+Modify doc/webcheck.init to suite your needs
+Copy webcheck.init to /etc/init.d/webcheck
+Make /etc/init.d/webcheck executable
+Add webcheck to the default runlevel

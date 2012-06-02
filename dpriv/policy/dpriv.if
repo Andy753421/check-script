@@ -1,0 +1,34 @@
+## <summary>policy for dpriv</summary>
+
+########################################
+## <summary>
+##	Execute a domain transition to run dpriv.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`dpriv_domtrans',`
+	gen_require(`
+		type dpriv_t;
+		type dpriv_exec_t;
+	')
+
+	#domain_auto_trans($1,dpriv_exec_t,dpriv_t)
+	domtrans_pattern($1,dpriv_exec_t,dpriv_t)
+
+	# allow dpriv_t $1:fd use;
+	# allow dpriv_t $1:fifo_file rw_file_perms;
+	# allow dpriv_t $1:process sigchld;
+')
+interface(`dpriv_run',`
+	gen_require(`
+		type dpriv_t;
+	')
+
+	dpriv_domtrans($1)
+	role $2 types dpriv_t;
+	dontaudit dpriv_t $3:chr_file rw_term_perms;
+')

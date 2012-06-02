@@ -1,0 +1,96 @@
+*******************************************************************************
+Note: This is the original installation file that was written in 2008 after 
+the grading program was first developed. Some of the information in here is 
+outdated, so please refer to the SETUP file for a more recent installation 
+guide. This file has been preserved because it contains some information that 
+is not in the newer SETUP file. 
+*******************************************************************************
+This must be hosted on a GNU/Linux machine with SELinux policies enabled.
+Note: SELinux and dpriv are not required for running the grading program. 
+
+Download the project files to their own directory.
+
+Install Dependencies
+--------------------
+Install Ruby
+Install Ruby-Gems
+Install Ruby on Rails
+Install RubyLDAP
+Install MySQL
+// Install MzScheme (deprecated, MzScheme is no longer supported)
+Install Petite Chez Scheme
+
+Set up dpriv
+(Note: This step can be skipped when installing on a local machine)
+------------
+Navigate to 'dpriv'
+Run 'make'
+Run 'make install'
+
+Set up Webcheck
+---------------
+Create three databases, one for development, one for testing, and one for 
+production. Suggested names are plc_check_dev, plc_check_test, and 
+plc_check_dev, respectively. Then create a user, plc_check, with permissions 
+on the databases. Record these in config/database.yml following the format 
+shown there.
+
+Navigate to 'webcheck'
+Run 'rake db:migrate'
+
+Configure authentication (not necessary for development)
+--------------------------------------------------------
+Append the following to /etc/openldap/ldap.conf
+
+TLS_REQCERT allow
+REFERRALS off
+
+Start the server
+----------------
+./webcheck/script/server
+or try
+./script/server from the webcheck directory
+
+Setup SSL (Recommended)
+-----------------------
+Read doc/SSL
+
+Setup boot services (Optional, not needed for development)
+----------------------------------------------------------
+Modify doc/webcheck.init to suite your needs
+Copy webcheck.init to /etc/init.d/webcheck
+Make /etc/init.d/webcheck executable
+Add webcheck to the default runlevel
+
+For Ubuntu
+--------------------------------------------------------------------------
+This is a list of some of the installation procedures for setting up the 
+system in Ubuntu. The installation process is similar for other Linux 
+systems, however some of the names may be slightly different. (Note: In my 
+experience Fedora's yum installation program does a better job at resolving 
+names and finding the software that you want installed than Ubuntu's apt-get. 
+Additionally, Fedora has SELinux installed by default, so it is probably a 
+better choice for development on the dpriv component.)
+
+Install dependencies:
+-----------------------------
+sudo apt-get install Ruby
+sudo apt-get install Ruby-Gems
+sudo gem install -v=2.2.2 rails
+sudo gem install activeldap
+sudo apt-get install irb
+sudo apt-get install mysql-server
+sudo apt-get mysql-server -admin
+sudo apt-get install alien
+Download petite chez scheme rpm from www.scheme.com
+alien <schemepackagename>              // probably petitechezscheme.....
+sudo dpkg -i <schemepackagename>
+sudo apt-get install libopenssl-ruby
+sudo apt-get install libmysql-ruby
+sudo apt-get install libldap-ruby1.8
+
+Start the server
+-----------------------------
+sudo /etc/init.d/mysql start    // Starts the MySQL database 
+./script/server                 // in check-script/trunk/webcheck, 
+                                // starts WEBrick

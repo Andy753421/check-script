@@ -1,0 +1,56 @@
+#!/usr/bin/ruby
+
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+require 'yaml'
+require 'pp'
+load File.dirname(__FILE__) + '/libcheck.rb'
+
+class Logger
+	def debug(msg)
+		puts msg
+	end
+end
+
+if ($*.size < 2)
+	puts "Usage: #{$0} <testcases> <student_code> [library]"
+	exit(1)
+end
+
+script = YAML.load_file($*[0])
+grader = MzSchemeGrader.new(script, $*[1], $*[2])
+#grader = ChezSchemeGrader.new(script, $*[1], $*[2])
+grader.logger = Logger.new
+results = grader.run()
+
+def print_results(current)
+	if (current[:testcases])
+		# It's a group of testcases
+		current[:testcases].each {|tc|
+			print_results(tc)
+		}
+	else
+		# It's a testcase
+		puts "Status   = '#{current[:status]}'"
+		puts "Testcode = '#{current[:test_code]}'"
+		puts "Expected = '#{current[:expected]}'"
+		puts "Actual   = '#{current[:actual]}'"
+		puts "Errors   = '#{current[:errors]}'"
+		puts
+	end
+end
+
+print_results(results)

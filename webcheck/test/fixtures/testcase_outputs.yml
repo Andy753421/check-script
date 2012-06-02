@@ -1,0 +1,20 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id					:integer
+# testcase_id			:integer
+# submission_id			:integer
+# success				:boolean
+# student_output		:text
+
+one:
+  id: 1
+  testcase_id: 1
+  submission_id: 1
+  success: true
+  student_output: 1
+two:
+  id: 2
+  testcase_id: 2
+  submission_id: 1
+  success: true
+  student_output: (5 6)

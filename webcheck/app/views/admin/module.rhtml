@@ -1,0 +1,44 @@
+<%
+# Copyright (C) 2007, 2008 Corey Kump
+# Copyright (C) 2007, 2008 Jason Sauppe
+# Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+%>
+<h2>Add new module</h2>
+<% form_tag({:action => 'module_add'}, {:multipart => true}) do %>
+    <%= file_field :module, :file, :size => 60 %>
+    <%= submit_tag 'Upload' %>
+<% end %>
+
+<h2>Existing modules</h2>
+<table>
+    <tr>
+        <th>Filename</th>
+        <th>Data</th>
+        <th>Delete</th>
+    </tr>
+    <% @modules.each do |mod| %>
+        <tr>
+            <td><%= mod %></td>
+            <td><%= link_to "View", :action => 'module_show', 
+                                    :name => mod %></td>
+            <td>
+                <% form_tag({:action => 'module_del', :name => mod}) do %>
+                    <%= submit_tag 'X' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>

@@ -1,0 +1,7 @@
+# dpriv executable will have:
+# label: system_u:object_r:dpriv_exec_t
+# MLS sensitivity: s0
+# MCS categories: <none>
+
+#/usr/local/bin/dpriv		--	gen_context(system_u:object_r:dpriv_exec_t,s0)
+/usr/local/bin/dpriv		--	gen_context(system_u:object_r:dpriv_exec_t,s5:c1,c0)

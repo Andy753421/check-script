@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id			:integer
+# name			:string
+# code			:text
+
+one:
+  id: 1
+  name: eq?
+  code: (lambda (x y) (eq? x y))
+two:
+  id: 2
+  name: equal?
+  code: (lambda (x y) (equal? x y))

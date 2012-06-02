@@ -1,0 +1,12 @@
+To setup https:
+	0. Navigate to 'webcheck'
+	1. ./script/plugin install ssl_requirement
+	2. Setup lighttpd.conf (included in repo)
+	3. generate .pemf ile (also included)
+		$ openssl req -new -x509 -keyout server.pem -out server.pem -days 365 -nodes
+	4. Install software
+		* Lighttpd with fastcgi extentions
+		* ruby with fcgi extentions (on fedora, this requires some work)
+
+See also:
+	http://weblog.textdrive.com/article/61/grabbing-a-tiger-by-the-tail

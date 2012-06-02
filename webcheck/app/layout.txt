@@ -1,0 +1,25 @@
+== TMPL ==
+controller --+- view1 ------+- callback1
+             |              `- callback2
+             `- view2 ------+- callback1
+                            `- callback2
+
+== WE NEED ==
+=== Everyone ===
+#user --------+- login -------- submit
+#             `- logout ------- ???
+
+=== Student ===
+#student -----+- assignment --- submit
+#             `- report
+
+=== TA/Professor ===
+#admin -------+- admin ------+- comparator_{add,mod,del}
+#                            `- user_{add,mod,del}
+
+?submission --+- user
+?             `- assignment
+
+?assignments -+- edit -------+- assignment_{add,mod,del}
+?                            |- problem_{add,mod,del}
+?                            `- testcase_{add,mod,del}

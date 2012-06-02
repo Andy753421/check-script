@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+# Attributes:
+# id				:integer
+# timestamp			:datetime
+# assignment_id		:integer
+# score				:integer
+
+one:
+  id: 1
+  timestamp: 2008-01-31
+  assignment_id: 1
+two:
+  id: 2
+  timestamp: 2008-02-04
+  assignment_id: 2

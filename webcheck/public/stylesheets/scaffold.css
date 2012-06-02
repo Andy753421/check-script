@@ -1,0 +1,179 @@
+/*
+Copyright (C) 2007, 2008 Corey Kump
+Copyright (C) 2007, 2008 Jason Sauppe
+Copyright (C) 2007, 2008 Andy Spencer <spenceal@rose-hulman.edu>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Generic Styles */
+* { position:relative; }
+html {
+	background-color:#464F56;
+}
+body {
+	margin:0;
+	/* padding:1em 0 1em 0; */
+	padding:1em 2em 1em 2em;
+	font-family:bitstream-mono-sans, arial, sans-serif;
+}
+pre {
+	background-color: #eee;
+	padding: 10px;
+	border:solid 1px #777;
+	/* font-size: 11px; */
+}
+table {
+	border-collapse:collapse;
+}
+td {
+	/* border: 1px #aaa solid; */
+	/* text-align: center; */
+	padding: 0.1em 0.3em 0.1em 0.3em;
+	font-weight: normal;
+	vertical-align: top;
+}
+td.d1 {
+    background-color: #EEEEEE; color: black;
+}
+td.d2 {
+    background-color: #DDDDDD; color: black;
+}
+td.assnEarly {
+    color: green;
+}
+td.assnOnTime {
+    color: black;
+}
+td.assnLate {
+    color: red;
+}
+td.assnElse {
+    color: purple;
+}
+tr.r1 td {
+    background-color: #BBBBBB; color:black;
+}
+th {
+	font-weight: bold;
+	text-align: left;
+	padding-right:0.5em;
+}
+h1,h2,h3,h4,h5,h6 {
+	margin-bottom:0;
+	padding-bottom:0;
+	border-bottom:solid 0 black;
+}
+h1,h2 { border-bottom-width:2px; }
+h3,h4 { border-bottom-width:1px; }
+
+/* Layout Styles */
+#titlepage {
+	position:relative;
+	margin:0;
+	border-top: solid 2px black;
+	border-bottom:solid 4px black;
+	background-color:#a00;
+	padding:0 1em 0 1em;
+	font-size:large;
+	color:white;
+}
+#mainmenu {
+	position:relative;
+	margin:0;
+	border-top:   solid 2px black;
+	border-bottom:solid 4px black;
+	background-color:#a00;
+	padding:0 1em 0 1em;
+	font-size:large;
+}
+#mainmenu * {
+	display:table-cell;
+	color:white;
+	text-decoration:none;
+	padding:0.1em 0.5em 0.1em 0.5em;
+}
+#mainmenu a:hover {
+	background-color:#c00;
+}
+#mainmenu .semi, #mainmenu .active {
+	background-color:#c00;
+}
+#submenu {}
+#content {
+	background-color:white;
+	padding:0.5em 0.2em 0 0.2em;
+}
+#footer {
+	margin:0.2em;
+	margin-top:0.5em;
+	text-align:center;
+}
+#footer * {
+	color:white;
+	text-decoration:none;
+	padding:0.2em;
+}
+#footer a:hover {
+	text-decoration:underline;
+}
+
+/* Flash styles */
+#flash {
+	border:solid 0 black;
+	border-width:2px 0 2px 0; 
+	background-color:#700;
+	font-weight:bold;
+	font-style:italic;
+	padding:0.2em 1em 0.2em 1em;
+	margin-bottom:1em;
+}
+#flash *        { color:#abf; }
+#flash .notice  { color:#0f0; }
+#flash .warning { color:#ff0; }
+#flash .error   { color:#f00; }
+
+/* Fake tables */
+.ftb { display:table; }
+.ftr { display:table-row; }
+.ftd { display:table-cell; border:solid 1px black;}
+
+/* Misc */
+.time { /* Does this look OK to everyone? */
+	/* font-family:monospace;
+	font-size:larger; */
+}
+
+table.tuple > tbody > tr > td {
+	border:0;
+	font-weight:bold;
+	vertical-align:top;
+}
+table.tuple > tbody > tr > td + td {
+	font-weight:normal;
+}
+.code {
+	font-family:monospace;
+	white-space:pre;
+}
+.code1 {
+	font-family:monospace;
+	white-space:pre;
+    background-color: #EEEEEE;
+}
+.code2 {
+	font-family:monospace;
+	white-space:pre;
+    background-color: #DDDDDD;
+}
